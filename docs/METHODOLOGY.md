@@ -41,18 +41,14 @@ It cannot establish that a source is true. It estimates how responsibly the sour
 - Recent preprints, benchmarks, and vendor claims require particular caution because peer review, replication, disclosure of compute, and test-set contamination may be unresolved.
 - Scores are aids to comparative discussion, not measurements with statistical precision.
 
-## Openness and teaching-scale map
+## AI openness by source category
 
-The companion openness and teaching-scale map uses two additional provisional dimensions, recorded in [teaching-scale-openness.csv](../data/teaching-scale-openness.csv):
+The companion categorical map groups sources as **AI industry**, **Journalist**, or **Educator**, and positions each on one additional provisional dimension recorded in [openness-by-category.csv](../data/openness-by-category.csv):
 
 - **Openness to AI use:** rejection (0) to active embrace (100). This captures the use advocated by the source, not an estimate of technical capability.
-- **Teaching or learner-audience scale:** few or no directly taught students (0) to a large learner or public audience (100). This captures the scale and mode of educational reach associated with the source, not the quality of its teaching.
+- **Category:** the source's primary public role in this review. “AI industry” records a material company role; “Journalist” includes public-facing reporting and interview-led science communication; “Educator” includes academic and instructional mathematics sources. It does not measure motive, independence, or the quality of an argument.
 
-These are descriptive, provisional scores rather than outcome measurements. A high teaching-scale score does not establish educational quality or evidence of learning.
-
-## Institutional and advocacy-context map
-
-This deliberately limited map includes only sources with documented context in [context-openness.csv](../data/context-openness.csv). Its vertical axis runs from a direct AI-industry role (0) to public-interest or environmental safeguards explicitly raised by the source (100). A midpoint or omitted source means **context was not established for this review**; it does not imply neutrality, motive, or bias. The map is intended to disclose context, not to discount a source's argument.
+The categories and scores are descriptive, provisional review aids. They are not claims about motive, bias, or educational quality.
 
 ## Review protocol
 

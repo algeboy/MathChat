@@ -1,0 +1,25 @@
+id,category,openness_to_ai_use_0_reject_100_embrace,classification_note,review_status
+su,Educator,65,"University mathematics educator and essayist.",provisional
+bessis,Educator,48,"Research mathematician writing about mathematical understanding.",provisional
+economist,Journalist,40,"General-news outlet reporting on education research.",provisional
+yahoo,Journalist,35,"General-news outlet reporting on education research.",provisional
+williamson,Educator,80,"Research mathematician and university teacher.",provisional
+tao,Educator,70,"Research mathematician and university teacher.",provisional
+weinreich,Educator,5,"Research-mathematics essay.",provisional
+leiden,Educator,45,"Collective academic mathematics-governance declaration.",provisional
+snakeoil,Journalist,40,"Public-facing evidence and technology-accountability newsletter.",provisional
+gowers,Educator,60,"Research mathematician and public mathematical writer.",provisional
+avigad,Educator,70,"University mathematician and formal-methods researcher.",provisional
+wolfram,AI industry,90,"Wolfram Research executive and mathematics-education reform advocate.",provisional
+tsimerman,Educator,90,"Research mathematician and university teacher.",provisional
+lecun,AI industry,80,"AI-industry leader and university professor; assigned to industry for this source context.",provisional
+riehl,Educator,65,"University mathematician and educator.",provisional
+lanier,AI industry,65,"Technology-industry researcher discussing mathematics education.",provisional
+marcus,AI industry,40,"AI-company founder and cognitive scientist.",provisional
+cepelewicz,Journalist,70,"Quanta mathematics editor and journalist.",provisional
+strogatz,Journalist,65,"Quanta podcast host and public mathematics communicator.",provisional
+carroll,Journalist,55,"Public science-podcast host.",provisional
+jaimungal,Journalist,75,"Long-form science and mathematics interview host.",provisional
+hossenfelder,Journalist,55,"Public science explainer and podcast host.",provisional
+keating,Journalist,65,"Public science-podcast host.",provisional
+stephenwolfram,AI industry,92,"Founder and CEO of Wolfram Research.",provisional
