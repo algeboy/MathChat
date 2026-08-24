@@ -31,3 +31,4 @@ Full third-party articles, paywalled material, transcripts, and PDFs are deliber
 | jaimungal | Curt Jaimungal | Public transcript of a Theories of Everything interview with Yang-Hui He recorded; interview perspective, not independent evaluation. |
 | hossenfelder | Sabine Hossenfelder | Public episode page recorded; full transcript was not publicly available during review, so assessment remains deliberately conservative. |
 | keating | Brian Keating | Public Into the Impossible interview listing and transcript summary recorded; interview with Terence Tao on AI and mathematics. |
+| stephenwolfram | Stephen Wolfram | Public company technical explanation recorded; clearly labeled as a company-affiliated perspective on computation-augmented AI. |
