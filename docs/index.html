@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AI and Mathematics: viewpoint map</title>
+  <style>
+    :root { color-scheme: light dark; font-family: system-ui, sans-serif; }
+    body { max-width: 1000px; margin: 2rem auto; padding: 0 1rem; color: CanvasText; background: Canvas; line-height: 1.5; }
+    h1 { margin-bottom: .25rem; } .lede { color: GrayText; }
+    svg { width: 100%; height: auto; border: 1px solid color-mix(in srgb, CanvasText 25%, transparent); }
+    .grid { stroke: color-mix(in srgb, CanvasText 20%, transparent); } .axis { stroke: CanvasText; }
+    .point { stroke: Canvas; stroke-width: 2; } .label { font-size: 11px; fill: CanvasText; }
+    .note { font-size: .9rem; color: GrayText; } code { background: color-mix(in srgb, CanvasText 9%, transparent); padding: .1rem .25rem; }
+  </style>
+</head>
+<body>
+  <h1>AI and mathematics: a transparent viewpoint map</h1>
+  <p class="lede">Outlook on the vertical axis; evidence basis on the horizontal axis; marker size represents provisional source reliability.</p>
+  <svg id="chart" viewBox="0 0 900 560" role="img" aria-label="Scatter plot of sources by evidence basis, outlook, and reliability"></svg>
+  <p class="note">Scores are provisional review judgments, not rankings of people. See <a href="METHODOLOGY.md">methodology</a>, <a href="RESULTS.md">results</a>, and the CSV files in <code>data/</code>.</p>
+  <script>
+    const data = [
+      ['Su',35,82,60],['Bessis',38,54,68],['Economist',86,28,72],['Yahoo',70,30,55],['Williamson',62,78,80],['Tao',78,61,88],['Weinreich',48,12,65],['Leiden',72,24,82],['AI Snake Oil',78,38,82],['Gowers',82,58,90],['Avigad',76,64,88],['Wolfram',68,72,78],['Tsimerman',55,88,76],['LeCun',65,65,84],['Riehl',86,56,90]
+    ];
+    const svg = document.getElementById('chart'), ns = 'http://www.w3.org/2000/svg';
+    const m={l:90,r:25,t:30,b:75}, w=900-m.l-m.r, h=560-m.t-m.b;
+    const x=v=>m.l+v*w/100, y=v=>m.t+(100-v)*h/100;
+    const add=(tag,a={},text='')=>{const e=document.createElementNS(ns,tag);Object.entries(a).forEach(([k,v])=>e.setAttribute(k,v));e.textContent=text;svg.append(e);return e};
+    add('rect',{x:m.l,y:m.t,width:w,height:h,fill:'none',class:'axis'});
+    [0,25,50,75,100].forEach(v=>{ add('line',{x1:x(v),x2:x(v),y1:m.t,y2:m.t+h,class:'grid'}); add('line',{x1:m.l,x2:m.l+w,y1:y(v),y2:y(v),class:'grid'}); add('text',{x:x(v),y:m.t+h+22,'text-anchor':'middle'},v); add('text',{x:m.l-11,y:y(v)+4,'text-anchor':'end'},v); });
+    add('text',{x:m.l+w/2,y:545,'text-anchor':'middle'},'Evidence basis: speculative (0) to data-supported (100)');
+    add('text',{x:20,y:m.t+h/2,transform:`rotate(-90 20 ${m.t+h/2})`,'text-anchor':'middle'},'Outlook: anxious (0) to hopeful (100)');
+    data.forEach(([name,evidence,outlook,reliability],i)=>{const color=`hsl(${(i*47)%360} 55% 48%)`;const c=add('circle',{cx:x(evidence),cy:y(outlook),r:5+reliability/18,fill:color,class:'point'});const title=add('title',{},`${name}: outlook ${outlook}; evidence ${evidence}; reliability ${reliability}`);c.append(title);add('text',{x:x(evidence)+11,y:y(outlook)+4,class:'label'},name);});
+  </script>
+</body>
+</html>
