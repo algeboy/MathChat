@@ -25,3 +25,9 @@ Full third-party articles, paywalled material, transcripts, and PDFs are deliber
 | riehl | Emily Riehl | Public talk page recorded. |
 | lanier | Jaron Lanier | Public 2014 interview recorded; its direct mathematics point concerns immersive visualization, not generative AI. |
 | marcus | Gary Marcus | Public World Science Festival 2026 interview and transcript recorded; a broad-AI reliability baseline with clear relevance to mathematical reasoning. |
+| cepelewicz | Jordana Cepelewicz | Public Quanta Magazine article and podcast recorded; journalism synthesis of mathematical perspectives on AI. |
+| strogatz | Steven Strogatz | Public Quanta Magazine podcast transcript recorded; expert interview on AI, uncertainty, and statistical reasoning. |
+| carroll | Sean Carroll | Public Mindscape interview transcript recorded; science-communication discussion of neural-network mathematics and limitations. |
+| jaimungal | Curt Jaimungal | Public transcript of a Theories of Everything interview with Yang-Hui He recorded; interview perspective, not independent evaluation. |
+| hossenfelder | Sabine Hossenfelder | Public episode page recorded; full transcript was not publicly available during review, so assessment remains deliberately conservative. |
+| keating | Brian Keating | Public Into the Impossible interview listing and transcript summary recorded; interview with Terence Tao on AI and mathematics. |
