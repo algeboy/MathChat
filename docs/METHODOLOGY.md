@@ -41,6 +41,15 @@ It cannot establish that a source is true. It estimates how responsibly the sour
 - Recent preprints, benchmarks, and vendor claims require particular caution because peer review, replication, disclosure of compute, and test-set contamination may be unresolved.
 - Scores are aids to comparative discussion, not measurements with statistical precision.
 
+## Education-facing map
+
+The companion education-facing map uses two additional provisional dimensions, recorded in [education-openness.csv](../data/education-openness.csv):
+
+- **Openness to AI use:** rejection (0) to active embrace (100). This captures the use advocated by the source, not an estimate of technical capability.
+- **Educational outlook:** harmful (0) to beneficial (100). This captures the source's anticipated net effect on mathematics learning and educational practice. Sources not primarily about education are scored only for their stated or reasonably direct implications and should be read with extra caution.
+
+These are interpretive scores, not outcome measurements. In particular, an educational-outlook score above 50 does not establish learning benefit; it records the source's own expected direction of effect.
+
 ## Review protocol
 
 For each proposed source, reviewers should record: the central claim; scope; source type; supporting evidence; notable limits; candidate scores; and a short rationale. Score changes should be documented in a pull request or issue.

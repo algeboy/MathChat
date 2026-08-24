@@ -17,6 +17,7 @@ Scores refer to a specific source's argument, never an author's worth, intellige
 - [Methodology and scoring rubric](docs/METHODOLOGY.md)
 - [Source ledger](data/source-ledger.csv)
 - [Provisional assessments](data/assessments.csv)
+- [Education-facing openness and outlook scores](data/education-openness.csv)
 - [Review snapshots and access record](snapshots/README.md)
 - [Initial prompt and review record](prompts/INITIAL-REVIEW-RECORD.md)
 - [How to contribute](CONTRIBUTING.md)
