@@ -1,0 +1,24 @@
+id,openness_to_ai_use_0_reject_100_embrace,teaching_or_learner_audience_scale_0_few_or_none_100_large,rationale,review_status
+su,65,35,"College mathematics educator and essayist; direct teaching is comparatively small-scale.",provisional
+bessis,48,25,"Research mathematician and essayist; source is not oriented to mass teaching.",provisional
+economist,40,85,"Major news outlet reporting on school learning for a broad public audience.",provisional
+yahoo,35,80,"Mass-audience news reporting on middle- and high-school learning.",provisional
+williamson,80,25,"Research-mathematics source with limited direct classroom reach.",provisional
+tao,70,50,"Research mathematician with university teaching and substantial public educational reach.",provisional
+weinreich,5,20,"Research-mathematics essay with limited direct teaching reach.",provisional
+leiden,45,55,"Collective declaration directed to a broad mathematics-research community, rather than a classroom.",provisional
+snakeoil,40,70,"Public-facing education analysis and newsletter with reach beyond individual courses.",provisional
+gowers,60,30,"Research mathematician and blog author; limited direct teaching scale.",provisional
+avigad,70,30,"University mathematician and formal-methods researcher; limited direct teaching scale.",provisional
+wolfram,90,95,"Curriculum-reform advocate explicitly addressing system-scale mathematics education.",provisional
+tsimerman,90,20,"Research-mathematics interview with limited direct teaching scale.",provisional
+lecun,80,40,"AI researcher and public lecturer; educational reach extends beyond a single course but is not primarily school-facing.",provisional
+riehl,65,35,"University mathematician and educator; direct teaching is comparatively small-scale.",provisional
+lanier,65,45,"Public technologist and speaker who discusses educational technology beyond individual classrooms.",provisional
+marcus,40,55,"Public-facing AI commentator and professor with broad communication reach.",provisional
+cepelewicz,70,80,"Quanta Magazine mathematics journalism and podcast reach a large public learner audience.",provisional
+strogatz,65,85,"Quanta podcast host and mathematics communicator with a large public audience.",provisional
+carroll,55,80,"Mindscape science podcast reaches a large public audience.",provisional
+jaimungal,75,85,"Theories of Everything long-form interviews reach a large public audience.",provisional
+hossenfelder,55,85,"Science explainer and podcast reach a large public audience.",provisional
+keating,65,75,"Into the Impossible science podcast reaches a large public audience.",provisional

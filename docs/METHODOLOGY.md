@@ -41,14 +41,18 @@ It cannot establish that a source is true. It estimates how responsibly the sour
 - Recent preprints, benchmarks, and vendor claims require particular caution because peer review, replication, disclosure of compute, and test-set contamination may be unresolved.
 - Scores are aids to comparative discussion, not measurements with statistical precision.
 
-## Education-facing map
+## Openness and teaching-scale map
 
-The companion education-facing map uses two additional provisional dimensions, recorded in [education-openness.csv](../data/education-openness.csv):
+The companion openness and teaching-scale map uses two additional provisional dimensions, recorded in [teaching-scale-openness.csv](../data/teaching-scale-openness.csv):
 
 - **Openness to AI use:** rejection (0) to active embrace (100). This captures the use advocated by the source, not an estimate of technical capability.
-- **Educational outlook:** harmful (0) to beneficial (100). This captures the source's anticipated net effect on mathematics learning and educational practice. Sources not primarily about education are scored only for their stated or reasonably direct implications and should be read with extra caution.
+- **Teaching or learner-audience scale:** few or no directly taught students (0) to a large learner or public audience (100). This captures the scale and mode of educational reach associated with the source, not the quality of its teaching.
 
-These are interpretive scores, not outcome measurements. In particular, an educational-outlook score above 50 does not establish learning benefit; it records the source's own expected direction of effect.
+These are descriptive, provisional scores rather than outcome measurements. A high teaching-scale score does not establish educational quality or evidence of learning.
+
+## Institutional and advocacy-context map
+
+This deliberately limited map includes only sources with documented context in [context-openness.csv](../data/context-openness.csv). Its vertical axis runs from a direct AI-industry role (0) to public-interest or environmental safeguards explicitly raised by the source (100). A midpoint or omitted source means **context was not established for this review**; it does not imply neutrality, motive, or bias. The map is intended to disclose context, not to discount a source's argument.
 
 ## Review protocol
 

@@ -1,0 +1,7 @@
+id,openness_to_ai_use_0_reject_100_embrace,documented_context_0_ai_industry_role_100_public_interest_or_environmental_safeguards,context_evidence_url,rationale,review_status
+lecun,80,5,https://ai.meta.com/people/yann-lecun/,"Chief AI Scientist role at Meta establishes a direct AI-industry connection.",documented
+wolfram,90,15,https://www.conradwolfram.com/bio,"CEO and European cofounder role at Wolfram Research establishes a direct commercial AI and computation connection.",documented
+lanier,65,20,https://www.microsoft.com/en-us/research/people/jalani/,"Current role at Microsoft establishes a direct technology-industry connection.",documented
+marcus,40,25,https://www.forbes.com/sites/amyfeldman/2020/10/28/startup-robustai-founded-by-cognitive-scientist-gary-marcus-and-roboticist-rodney-brooks-raises-15-million-to-make-building-smarter-robots-easier/,"Founder role at Robust.AI establishes a direct AI-industry connection.",documented
+snakeoil,40,65,https://www.cs.princeton.edu/news/ai-snake-oil-conversation-princeton-ai-experts-arvind-narayanan-and-sayash-kapoor,"Public-interest and tech-accountability orientation is explicit; this is not a claim of environmental advocacy.",documented
+leiden,45,80,https://leidendeclaration.ai/,"The declaration explicitly identifies public-interest regulation and environmental costs among issues requiring safeguards.",documented
