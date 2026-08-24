@@ -23,3 +23,5 @@ Full third-party articles, paywalled material, transcripts, and PDFs are deliber
 | tsimerman | Jacob Tsimerman | Secondary interview/report link recorded. |
 | lecun | Yann LeCun | Public lecture/report link recorded; explicitly marked a broad-AI baseline. |
 | riehl | Emily Riehl | Public talk page recorded. |
+| lanier | Jaron Lanier | Public 2014 interview recorded; its direct mathematics point concerns immersive visualization, not generative AI. |
+| marcus | Gary Marcus | Public World Science Festival 2026 interview and transcript recorded; a broad-AI reliability baseline with clear relevance to mathematical reasoning. |
