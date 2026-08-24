@@ -1,0 +1,16 @@
+id,outlook_0_anxious_100_hopeful,evidence_0_speculative_100_data_supported,reliability_0_lower_100_higher,rationale,review_status
+su,82,35,60,"Humanistic and educational case for mathematics; mainly normative rather than empirical.",provisional
+bessis,54,38,68,"Mixed and conditional view grounded in professional experience, but largely philosophical and future-facing.",provisional
+economist,28,86,72,"Reports a large student study, but the reported work is recent and not yet peer-reviewed; article is secondary reporting.",provisional
+yahoo,30,70,55,"Secondary education reporting, not an independent empirical study.",provisional
+williamson,78,62,80,"Research mathematician's technical experience supports optimism; extrapolations remain partly speculative.",provisional
+tao,61,78,88,"Explicitly conditional analysis with unusually clear uncertainty, reporting-bias, and verification caveats.",provisional
+weinreich,12,48,65,"Cites current developments but draws a strongly normative policy conclusion.",provisional
+leiden,24,72,82,"Collective, documented governance proposal; not designed as an empirical impact study.",provisional
+snakeoil,38,78,82,"Evidence-oriented critique of AI claims in education, but not mathematics-specific.",provisional
+gowers,58,82,90,"Research-mathematics perspective that separates verified results from hype and reports failure modes.",provisional
+avigad,64,76,88,"Formalization and proof perspective with clear relevance to verification and mathematical practice.",provisional
+wolfram,72,68,78,"Education-reform argument with an explicit curriculum proposal; evidence is mixed and policy-oriented.",provisional
+tsimerman,88,55,76,"Strong, future-facing forecast from a research mathematician; limited direct evidence for timelines.",provisional
+lecun,65,65,84,"Highly relevant AI expertise but only indirect relevance to mathematics; current-model limitations and future architectures are partly interpretive.",provisional
+riehl,56,86,90,"Mathematics-specific, verification-focused work that articulates testable criteria for meaningful AI contribution.",provisional

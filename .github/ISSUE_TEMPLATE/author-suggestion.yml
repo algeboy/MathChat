@@ -1,0 +1,45 @@
+name: Author or source suggestion
+description: Propose a specific source for the viewpoint map.
+title: "Source suggestion: "
+labels: ["source suggestion"]
+body:
+  - type: input
+    id: author
+    attributes:
+      label: Author or organization
+    validations:
+      required: true
+  - type: input
+    id: source
+    attributes:
+      label: Specific title and public URL
+      description: Please use a particular essay, paper, talk, or transcript rather than a homepage.
+    validations:
+      required: true
+  - type: textarea
+    id: claim
+    attributes:
+      label: Main claim
+      description: In 2–5 sentences, what does this source argue or find?
+    validations:
+      required: true
+  - type: checkboxes
+    id: scope
+    attributes:
+      label: Scope
+      options:
+        - label: Research mathematics
+        - label: Undergraduate education
+        - label: Graduate education
+        - label: K–12 mathematics education
+        - label: Broad AI baseline (not mathematics-specific)
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Evidence and limitations
+      description: What support does the source provide, and what would limit its interpretation?
+  - type: textarea
+    id: scores
+    attributes:
+      label: Suggested scores (optional)
+      description: Outlook, evidence basis, and source reliability—each 0–100—with a brief rationale.
