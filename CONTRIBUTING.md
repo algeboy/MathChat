@@ -19,6 +19,7 @@ Open an issue or pull request that names the row in `data/assessments.csv`, prop
 
 ## Standards
 
+- Keep submissions tidy, polite, and apolitical.
 - Separate evidence from opinion or prediction.
 - Prefer primary research, official transcripts, original essays, and identifiable talks.
 - State whether a claim concerns research mathematics, undergraduate teaching, graduate training, or K–12 education.

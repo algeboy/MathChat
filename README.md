@@ -1,5 +1,7 @@
 # MathChat: a transparent map of AI and mathematics viewpoints
 
+## Explore MathChat online: [PleaseDistribute.Org/MathChat](https://PleaseDistribute.Org/MathChat/)
+
 This repository compares published views on artificial intelligence in mathematics and mathematics education. It is a discussion aid, not a ranking of people or a forecast of AI capability.
 
 Each source has three provisional, reviewable scores from 0 to 100:

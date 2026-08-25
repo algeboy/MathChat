@@ -1,6 +1,6 @@
 # Source snapshots
 
-This directory contains **review snapshots**, not archived copies of source articles. A snapshot records the public URL, source type, scope, access status, central claim, and review notes at the time of assessment.
+This directory contains **review snapshots**, not archived copies of source articles. A snapshot records the public URL, source type, scope, access status, central claim, and review notes at the time of assessment. For a submitted arXiv source, its browser-local submission snapshot also records the canonical arXiv link and ID, public abstract (as the position summary), category, the full-paper text length used for scoring, and links to each listed author's arXiv search profile. The abstract is not used as the scoring input.
 
 Full third-party articles, paywalled material, transcripts, and PDFs are deliberately not copied into this public repository. They remain subject to their authors' and publishers' rights. The complete source metadata live in [`../data/source-ledger.csv`](../data/source-ledger.csv); the assessment rationales live in [`../data/assessments.csv`](../data/assessments.csv).
 
