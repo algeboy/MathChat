@@ -36,3 +36,26 @@
   </script>
 </body>
 </html>
+    .coverage { margin: 2rem 0; padding: 1rem; border: 1px solid color-mix(in srgb, CanvasText 25%, transparent); border-radius: .4rem; }
+    .coverage h2 { margin-top: 0; font-size: 1.2rem; } .histogram { display: grid; gap: .7rem; }
+    .histogram-row { display: grid; grid-template-columns: minmax(9rem, 13rem) 1fr auto; align-items: center; gap: .75rem; }
+    .bar-track { height: 1.4rem; background: color-mix(in srgb, CanvasText 12%, transparent); border-radius: .2rem; overflow: hidden; }
+    .bar { height: 100%; background: #3973ac; min-width: 0; } .count { font-variant-numeric: tabular-nums; }
+  <section class="coverage" aria-labelledby="coverage-title">
+    <h2 id="coverage-title">Declared concern coverage</h2>
+    <p>Histogram of the 24 declared pieces that explicitly cover each concern. A piece may count in more than one concern; coverage is not a judgment of quality or position.</p>
+    <div id="coverage-chart" class="histogram" role="img" aria-label="Histogram showing concern coverage across declared pieces"></div>
+    <p class="note">Education: 6; research mathematics: 13; jobs in mathematics: 0. Jobs are currently an identified coverage gap, not evidence that the topic is unimportant. Derived from <a href="../data/concern-coverage.csv">concern-coverage.csv</a>, using the ledger's declared scope and notes only.</p>
+  </section>
+    const concerns = [
+      ['Education', 6], ['Research mathematics', 13], ['Jobs in mathematics', 0]
+    ], totalPieces = 24, coverageChart = document.getElementById('coverage-chart');
+    concerns.forEach(([label, count]) => {
+      const row = document.createElement('div'); row.className = 'histogram-row';
+      const title = document.createElement('span'); title.textContent = label;
+      const track = document.createElement('div'); track.className = 'bar-track';
+      const bar = document.createElement('div'); bar.className = 'bar';
+      bar.style.width = `${count / totalPieces * 100}%`; bar.setAttribute('aria-hidden', 'true'); track.append(bar);
+      const value = document.createElement('span'); value.className = 'count'; value.textContent = `${count} / ${totalPieces}`;
+      row.append(title, track, value); coverageChart.append(row);
+    });

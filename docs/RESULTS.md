@@ -18,6 +18,9 @@ These scores are comparative review aids, not measurements of authors or predict
 - Humanistic sources emphasize that mathematics has purposes beyond producing answers: conceptual understanding, judgment, intellectual formation, and a shared research culture.
 - The most constructive common ground is conditional adoption: use AI for explanation, exploration, routine tasks, and formal assistance; preserve independent practice and require transparent verification for consequential claims.
 
+## Declared concern coverage
+
+The current ledger explicitly covers education in 6 of 24 pieces and research mathematics in 13 of 24 pieces. No declared piece currently identifies jobs in mathematics as a concern. This is a coverage gap in the collection, not a conclusion about the importance of mathematical employment. The histogram on the [viewpoint map](index.html) and [`concern-coverage.csv`](../data/concern-coverage.csv) use only each entry's stated scope and notes, so that the count remains auditable.
 ## Departmental implications to discuss
 
 1. Define what students must be able to do without AI, and assess it directly.

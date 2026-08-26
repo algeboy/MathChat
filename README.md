@@ -31,3 +31,4 @@ Please suggest authors, sources, score corrections, and better evidence through 
 ## License
 
 Repository-created materials are dedicated to the public domain under [CC0 1.0](LICENSE). Linked sources remain subject to their own authors' and publishers' rights; this repository stores links and review metadata rather than copied articles.
+- [Declared concern coverage](data/concern-coverage.csv) — education, research mathematics, and jobs in mathematics
