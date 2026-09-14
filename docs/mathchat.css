@@ -113,3 +113,10 @@
 .mathchat-page .mathchat-timing-key span { font-size: 1rem; }
 .mathchat-page .mathchat-timing-key span:first-child { color: var(--chalk-yellow); }
 .mathchat-page .mathchat-timing-key span:nth-child(2) { color: var(--chalk-blue); }
+
+/* Review map: a wide table needs its own scroll region on a narrow screen. */
+.mathchat-page .mathchat-table-wrap { overflow-x: auto; margin: 1.5rem 0 2rem; }
+.mathchat-page .mathchat-table-wrap table { min-width: 720px; }
+.mathchat-page .mathchat-review-map td, .mathchat-page .mathchat-review-map th { font-size: 1rem; vertical-align: top; }
+.mathchat-page .mathchat-review-map .num { text-align: right; white-space: nowrap; }
+.mathchat-page .mathchat-review-map td a { overflow-wrap: anywhere; }

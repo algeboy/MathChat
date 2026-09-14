@@ -23,6 +23,7 @@ DEFAULT_SITE = mathchat.ROOT.parent / 'algeboy.github.io'
 # Canonical data file -> where the site reads it from.
 COPIES = {
     'source-ledger.csv': ['_data/mathchat_sources.csv'],
+    'assessments.csv': ['_data/mathchat_assessments.csv'],
     'source-topics.csv': ['_data/mathchat_source_topics.csv', 'assets/data/mathchat-source-topics.csv'],
     'source-timing.csv': ['_data/mathchat_source_timing.csv', 'assets/data/mathchat-source-timing.csv'],
     'source-timing-cutoffs.json': ['_data/mathchat_timing_cutoffs.json'],

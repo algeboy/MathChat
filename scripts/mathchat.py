@@ -13,7 +13,7 @@ DATA = ROOT / 'data'
 
 # Each ledger file, with the columns it must carry for every source.
 FILES = {
-    'source-ledger.csv': ['id', 'author_or_source', 'title', 'url', 'published', 'scope', 'source_type', 'notes', 'map_category', 'short_label'],
+    'source-ledger.csv': ['id', 'author_or_source', 'title', 'url', 'published', 'scope', 'source_type', 'notes', 'map_category', 'short_label', 'main_contribution'],
     'assessments.csv': ['id', 'outlook_0_anxious_100_hopeful', 'evidence_0_speculative_100_data_supported',
                         'reliability_0_lower_100_higher', 'rationale', 'review_status'],
     'openness-by-category.csv': ['id', 'category', 'openness_to_ai_use_0_reject_100_embrace',
