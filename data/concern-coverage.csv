@@ -1,25 +1,26 @@
 id,education,research_mathematics,jobs_in_mathematics,coverage_basis
-su,1,0,0,"Scope explicitly names undergraduate mathematics education."
-bessis,0,1,0,"Scope explicitly names research mathematics."
-economist,1,0,0,"Scope explicitly names secondary education."
-yahoo,1,0,0,"Scope explicitly names secondary education."
-williamson,0,1,0,"Scope explicitly names research mathematics."
-tao,0,1,0,"Scope explicitly names research mathematics."
-weinreich,0,1,0,"Scope explicitly names research mathematics."
-leiden,0,1,0,"Scope explicitly names research mathematics."
-snakeoil,1,0,0,"Scope explicitly names education baseline."
-gowers,0,1,0,"Scope explicitly names research mathematics."
-avigad,0,1,0,"Scope explicitly names research mathematics."
-wolfram,1,0,0,"Scope explicitly names mathematics education."
-tsimerman,0,1,0,"Scope explicitly names research mathematics."
-lecun,0,0,0,"Broad AI baseline; no declared coverage of the three concerns."
-riehl,0,1,0,"Scope explicitly names research mathematics."
-lanier,1,0,0,"Scope explicitly names mathematics education."
-marcus,0,0,0,"Broad AI baseline; notes rule out treating it as a mathematics-education study."
-cepelewicz,0,1,0,"Scope explicitly names research mathematics."
-strogatz,0,0,0,"Scope names mathematics and science, not education or research mathematics."
+avigad,0,1,0,Scope explicitly names research mathematics.
+bessis,0,1,0,Scope explicitly names research mathematics.
 carroll,0,0,0,"Scope names mathematics and science, not education or research mathematics."
-jaimungal,0,1,0,"Scope explicitly names research mathematics."
-hossenfelder,0,1,0,"Scope explicitly names research mathematics."
-keating,0,1,0,"Scope explicitly names research mathematics."
-stephenwolfram,0,0,0,"Broad AI baseline; no declared coverage of the three concerns."
+cepelewicz,0,1,0,Scope explicitly names research mathematics.
+economist,1,0,0,Scope explicitly names secondary education.
+gowers,0,1,0,Scope explicitly names research mathematics.
+hossenfelder,0,1,0,Scope explicitly names research mathematics.
+jaimungal,0,1,0,Scope explicitly names research mathematics.
+keating,0,1,0,Scope explicitly names research mathematics.
+lanier,1,0,0,Scope explicitly names mathematics education.
+lecun,0,0,0,Broad AI baseline; no declared coverage of the three concerns.
+leiden,0,1,0,Scope explicitly names research mathematics.
+marcus,0,0,0,Broad AI baseline; notes rule out treating it as a mathematics-education study.
+mathandai,0,0,0,Not yet coded in the current review.
+riehl,0,1,0,Scope explicitly names research mathematics.
+snakeoil,1,0,0,Scope explicitly names education baseline.
+stephenwolfram,0,0,0,Broad AI baseline; no declared coverage of the three concerns.
+strogatz,0,0,0,"Scope names mathematics and science, not education or research mathematics."
+su,1,0,0,Scope explicitly names undergraduate mathematics education.
+tao,0,1,0,Scope explicitly names research mathematics.
+tsimerman,0,1,0,Scope explicitly names research mathematics.
+weinreich,0,1,0,Scope explicitly names research mathematics.
+williamson,0,1,0,Scope explicitly names research mathematics.
+wolfram,1,0,0,Scope explicitly names mathematics education.
+yahoo,1,0,0,Scope explicitly names secondary education.

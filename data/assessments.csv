@@ -1,25 +1,26 @@
 id,outlook_0_anxious_100_hopeful,evidence_0_speculative_100_data_supported,reliability_0_lower_100_higher,rationale,review_status
-su,82,35,60,"Humanistic and educational case for mathematics; mainly normative rather than empirical.",provisional
+avigad,64,76,88,Formalization and proof perspective with clear relevance to verification and mathematical practice.,provisional
 bessis,54,38,68,"Mixed and conditional view grounded in professional experience, but largely philosophical and future-facing.",provisional
+carroll,55,54,76,Science-communication interview makes the mathematics of neural networks accessible and stresses limits of data-hungry systems; it is explanatory rather than a systematic assessment of AI in mathematics.,provisional
+cepelewicz,64,76,82,Reported synthesis of interviews and linked primary material portrays substantial but qualified change in mathematical practice; journalism is secondary evidence rather than a research study.,provisional
 economist,28,86,72,"Reports a large student study, but the reported work is recent and not yet peer-reviewed; article is secondary reporting.",provisional
-yahoo,30,70,55,"Secondary education reporting, not an independent empirical study.",provisional
-williamson,78,62,80,"Research mathematician's technical experience supports optimism; extrapolations remain partly speculative.",provisional
-tao,61,78,88,"Explicitly conditional analysis with unusually clear uncertainty, reporting-bias, and verification caveats.",provisional
-weinreich,12,48,65,"Cites current developments but draws a strongly normative policy conclusion.",provisional
-leiden,24,72,82,"Collective, documented governance proposal; not designed as an empirical impact study.",provisional
-snakeoil,38,78,82,"Evidence-oriented critique of AI claims in education, but not mathematics-specific.",provisional
-gowers,58,82,90,"Research-mathematics perspective that separates verified results from hype and reports failure modes.",provisional
-avigad,64,76,88,"Formalization and proof perspective with clear relevance to verification and mathematical practice.",provisional
-wolfram,72,68,78,"Education-reform argument with an explicit curriculum proposal; evidence is mixed and policy-oriented.",provisional
-tsimerman,88,55,76,"Strong, future-facing forecast from a research mathematician; limited direct evidence for timelines.",provisional
-lecun,65,65,84,"Highly relevant AI expertise but only indirect relevance to mathematics; current-model limitations and future architectures are partly interpretive.",provisional
-riehl,56,86,90,"Mathematics-specific, verification-focused work that articulates testable criteria for meaningful AI contribution.",provisional
-lanier,60,36,64,"Supports immersive mathematical visualization while warning against technology that reduces learners to metrics; the cited interview predates generative AI and is not an outcome study.",provisional
-marcus,32,65,84,"World Science Festival interview argues that LLMs fail to generalize recursive reasoning tasks and so should not be mistaken for robust abstraction; it is a primary interview, not a systematic mathematics-education study.",provisional
-cepelewicz,64,76,82,"Reported synthesis of interviews and linked primary material portrays substantial but qualified change in mathematical practice; journalism is secondary evidence rather than a research study.",provisional
-strogatz,60,70,84,"Interview with a mathematician-statistician explains black-box prediction, uncertainty, and statistical calibration; it is an expert interview rather than a direct study of AI in mathematical practice.",provisional
-carroll,55,54,76,"Science-communication interview makes the mathematics of neural networks accessible and stresses limits of data-hungry systems; it is explanatory rather than a systematic assessment of AI in mathematics.",provisional
-jaimungal,76,55,70,"Long-form interview with mathematical physicist Yang-Hui He portrays rapid, potentially transformative AI-assisted research while distinguishing current tools from full automated reasoning; it is an interview rather than independent evaluation.",provisional
+gowers,58,82,90,Research-mathematics perspective that separates verified results from hype and reports failure modes.,provisional
 hossenfelder,58,45,64,"Science explainer examines claims that AI has solved longstanding theorems; public access provides the episode framing but not a full transcript, so this provisional score is deliberately conservative.",provisional
+jaimungal,76,55,70,"Long-form interview with mathematical physicist Yang-Hui He portrays rapid, potentially transformative AI-assisted research while distinguishing current tools from full automated reasoning; it is an interview rather than independent evaluation.",provisional
 keating,61,58,74,"Interview with Terence Tao frames AI as useful for idea generation and recall but insists on verification and proof assistants for genuine mathematical progress; it is a host-and-guest discussion, not an impact study.",provisional
-stephenwolfram,78,55,74,"Advocates computation-augmented AI: combining generative systems with exact symbolic and numerical computation; the source is a company technical/product explanation rather than independent evaluation.",provisional
+lanier,60,36,64,Supports immersive mathematical visualization while warning against technology that reduces learners to metrics; the cited interview predates generative AI and is not an outcome study.,provisional
+lecun,65,65,84,Highly relevant AI expertise but only indirect relevance to mathematics; current-model limitations and future architectures are partly interpretive.,provisional
+leiden,24,72,82,"Collective, documented governance proposal; not designed as an empirical impact study.",provisional
+marcus,32,65,84,"World Science Festival interview argues that LLMs fail to generalize recursive reasoning tasks and so should not be mistaken for robust abstraction; it is a primary interview, not a systematic mathematics-education study.",provisional
+mathandai,63,61,74,"Over the last few months, the mathematical capabilities of LLMs have improved dramatically, to the point that they can solve major outstanding problems in many fields of mathematics. However, the push by AI companies to solve mathematical problems as a benchmark is detrimental to",provisional
+riehl,56,86,90,"Mathematics-specific, verification-focused work that articulates testable criteria for meaningful AI contribution.",provisional
+snakeoil,38,78,82,"Evidence-oriented critique of AI claims in education, but not mathematics-specific.",provisional
+stephenwolfram,78,55,74,Advocates computation-augmented AI: combining generative systems with exact symbolic and numerical computation; the source is a company technical/product explanation rather than independent evaluation.,provisional
+strogatz,60,70,84,"Interview with a mathematician-statistician explains black-box prediction, uncertainty, and statistical calibration; it is an expert interview rather than a direct study of AI in mathematical practice.",provisional
+su,82,35,60,Humanistic and educational case for mathematics; mainly normative rather than empirical.,provisional
+tao,61,78,88,"Explicitly conditional analysis with unusually clear uncertainty, reporting-bias, and verification caveats.",provisional
+tsimerman,88,55,76,"Strong, future-facing forecast from a research mathematician; limited direct evidence for timelines.",provisional
+weinreich,12,48,65,Cites current developments but draws a strongly normative policy conclusion.,provisional
+williamson,78,62,80,Research mathematician's technical experience supports optimism; extrapolations remain partly speculative.,provisional
+wolfram,72,68,78,Education-reform argument with an explicit curriculum proposal; evidence is mixed and policy-oriented.,provisional
+yahoo,30,70,55,"Secondary education reporting, not an independent empirical study.",provisional
