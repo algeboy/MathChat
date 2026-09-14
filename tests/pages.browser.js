@@ -73,7 +73,7 @@
     assert(!$('result').hidden, 'A blocked video title still scores the transcript');
 
     // Website: direct read, reader-service fallback, then pasting.
-    $('tab-website').click(); input('website-url', 'https://example.org/article');
+    $('tab-website').click(); input('title', ''); input('website-url', 'https://example.org/article');
     win.fetch = async () => new win.Response('<article>' + text + '</article>');
     $('score').click(); await settle();
     assert(!$('result').hidden && $('website-status').textContent.includes('directly'), 'Direct website read scores');
@@ -83,6 +83,7 @@
       : Promise.reject(new Error('CORS fixture'));
     $('score').click(); await settle();
     assert(!$('result').hidden && $('website-status').textContent.includes('r.jina.ai'), 'Reader service reads a site that blocks direct access');
+    assert($('title').value === 'Fixture', 'Website title comes from the reader record');
     assert(!$('website-text').value.includes('https://'), 'Reader markdown is reduced to prose');
     input('website-url', 'https://example.org/third');
     win.fetch = async () => { throw new Error('CORS fixture'); }; $('score').click(); await settle();

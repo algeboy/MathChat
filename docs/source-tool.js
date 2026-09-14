@@ -154,18 +154,26 @@
   }
   $('source-youtube-url').addEventListener('input', () => { ++youtubeRequest; youtubeSnapshot = null; invalidate(); });
 
-  function extractArticle(html) { const doc = new DOMParser().parseFromString(html, 'text/html'); doc.querySelectorAll('script,style,noscript,nav,header,footer,aside,form,iframe,svg,canvas').forEach(node => node.remove()); return clean((doc.querySelector('article, main, [role="main"]') || doc.body)?.textContent); }
+  function extractArticle(html) {
+    const doc = new DOMParser().parseFromString(html, 'text/html');
+    const title = clean(doc.querySelector('meta[property="og:title"]')?.getAttribute('content') || doc.querySelector('h1')?.textContent || doc.title);
+    doc.querySelectorAll('script,style,noscript,nav,header,footer,aside,form,iframe,svg,canvas').forEach(node => node.remove());
+    return { title, text: clean((doc.querySelector('article, main, [role="main"]') || doc.body)?.textContent) };
+  }
   /* The reader returns markdown. Reduce it to prose so that its link syntax does
      not inflate the citation count relative to a directly read page. */
   function readerText(raw) {
     const body = raw.includes('Markdown Content:') ? raw.slice(raw.indexOf('Markdown Content:') + 17) : raw;
-    return clean(body
+    const title = clean((raw.match(/^Title:\s*(.+)$/m) || [])[1] || '');
+    return { title, text: clean(body
       .replace(/!\[[^\]]*\]\([^)]*\)/g, ' ')
       .replace(/\[([^\]]*)\]\([^)]*\)/g, '$1')
       .replace(/^\s*[-*]\s+/gm, ' ')
       .replace(/https?:\/\/\S+/g, ' ')
-      .replace(/[#>`*_|]/g, ' '));
+      .replace(/[#>`*_|]/g, ' ')) };
   }
+  /* The page title is only a default: a title the submitter typed is kept. */
+  const useTitle = title => { if (title && !$('source-title').value.trim()) $('source-title').value = title; };
   async function loadWebsite() {
     const url = validUrl($('source-website-url').value.trim()), token = ++websiteRequest;
     if (!url) { setStatus('source-website-status', 'Enter a valid HTTP or HTTPS website URL.'); return ''; }
@@ -174,24 +182,24 @@
     try {
       const response = await fetch(url.href, { signal: AbortSignal.timeout(15000) });
       if (!response.ok) throw new Error(`site returned ${response.status}`);
-      const text = extractArticle(await response.text());
-      if (text.length < 80) throw new Error('the page did not expose enough article text');
+      const article = extractArticle(await response.text());
+      if (article.text.length < 80) throw new Error('the page did not expose enough article text');
       if (token !== websiteRequest || active !== 'website') return '';
-      $('source-website-text').value = text;
-      setStatus('source-website-status', `Read ${text.length.toLocaleString()} characters directly from the article.`);
-      return text;
+      $('source-website-text').value = article.text; useTitle(article.title);
+      setStatus('source-website-status', `Read ${article.text.length.toLocaleString()} characters directly from the article.`);
+      return article.text;
     } catch (error) { directError = error.message; }
     if (token !== websiteRequest || active !== 'website') return '';
     setStatus('source-website-status', 'The site refused a direct read. Retrieving it through the r.jina.ai reader service…');
     try {
       const response = await fetch(READER + url.href, { signal: AbortSignal.timeout(30000) });
       if (!response.ok) throw new Error(`reader returned ${response.status}`);
-      const text = readerText(await response.text());
-      if (text.length < 80) throw new Error('the reader did not return enough article text');
+      const article = readerText(await response.text());
+      if (article.text.length < 80) throw new Error('the reader did not return enough article text');
       if (token !== websiteRequest || active !== 'website') return '';
-      $('source-website-text').value = text;
-      setStatus('source-website-status', `Read ${text.length.toLocaleString()} characters through the r.jina.ai reader service.`);
-      return text;
+      $('source-website-text').value = article.text; useTitle(article.title);
+      setStatus('source-website-status', `Read ${article.text.length.toLocaleString()} characters through the r.jina.ai reader service.`);
+      return article.text;
     } catch (error) {
       if (token === websiteRequest && active === 'website') {
         $('source-website-manual').open = true;
