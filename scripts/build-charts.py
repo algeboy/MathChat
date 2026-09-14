@@ -1,0 +1,170 @@
+"""Generate the two hand-placed MathChat charts from the ledger data.
+
+The viewpoint map and the category chart used to be hand-written SVG, so adding
+one source meant recomputing circle coordinates and nudging labels by hand. Both
+are now produced from data/, which is what makes a new source a data-only edit.
+
+Writes Jekyll includes into the site repository:
+  _includes/mathchat-viewpoint-map.html
+  _includes/mathchat-category-chart.html
+"""
+import sys
+from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import mathchat
+
+# Plot geometry, matching the original hand-drawn chart.
+LEFT, RIGHT, TOP, BOTTOM = 105, 840, 40, 440
+CAT_LEFT, CAT_RIGHT = 185, 840
+ROW_Y = {'Educator': 80, 'Journalist': 160, 'AI industry': 240}
+
+
+def escape(text):
+    return (text.replace('&', '&amp;').replace('<', '&lt;').replace('>', '&gt;')
+                .replace('"', '&quot;'))
+
+
+def radius(reliability):
+    """Marker size, 8-13px across the 0-100 reliability range."""
+    return round(8 + reliability / 100 * 5)
+
+
+def place_labels(points, markers):
+    """Offset each label so it clears every label already placed and every marker.
+
+    Tries a ring of candidate offsets around the point and keeps the first that
+    is clear, which is what the hand-tuned chart achieved by eye. Labels are
+    placed largest-marker first, since those have the least room to move.
+    """
+    CANDIDATES = [(side, dy) for dy in (4, -8, 15, -19, 26, -30, 37, -41, 48, -52)
+                  for side in (1, -1)]
+    CHAR_W, LINE_H = 6.6, 13
+    placed = []
+    overlaps = lambda a, b: a[0] < b[2] and b[0] < a[2] and a[1] < b[3] and b[1] < a[3]
+    for x, y, r, text in points:
+        chosen = None
+        for dx, dy in CANDIDATES:
+            anchor = 'start' if dx >= 0 else 'end'
+            lx = x + r + 6 if dx >= 0 else x - r - 6
+            ly = y + dy
+            width = len(text) * CHAR_W
+            left = lx if anchor == 'start' else lx - width
+            box = (left, ly - LINE_H + 3, left + width, ly + 3)
+            if any(overlaps(box, q) for q in placed):
+                continue
+            if box[0] < 100 or box[2] > 915 or box[1] < 30 or box[3] > 455:
+                continue
+            chosen = (box, lx, ly, anchor)
+            break
+        if chosen is None:
+            lx, ly, anchor = x + r + 6, y + 4, 'start'
+            width = len(text) * CHAR_W
+            chosen = ((lx, ly - LINE_H + 3, lx + width, ly + 3), lx, ly, anchor)
+        placed.append(chosen[0])
+        yield chosen[1], chosen[2], chosen[3], text
+
+
+def viewpoint_map():
+    ledger = {r['id']: r for r in mathchat.read('source-ledger.csv')}
+    scores = mathchat.read('assessments.csv')
+    by_category = {}
+    for row in scores:
+        source = ledger[row['id']]
+        outlook = int(row['outlook_0_anxious_100_hopeful'])
+        evidence = int(row['evidence_0_speculative_100_data_supported'])
+        reliability = int(row['reliability_0_lower_100_higher'])
+        x = round(LEFT + evidence / 100 * (RIGHT - LEFT))
+        y = round(BOTTOM - outlook / 100 * (BOTTOM - TOP))
+        by_category.setdefault(source['map_category'], []).append(
+            dict(x=x, y=y, r=radius(reliability), label=source['short_label'],
+                 name=source['author_or_source'], outlook=outlook,
+                 evidence=evidence, reliability=reliability))
+
+    out = []
+    out.append('<svg id="viewpoint-map" class="mathchat-plot" viewBox="0 0 920 560" role="img" aria-labelledby="plot-title plot-desc">')
+    out.append('  <title id="plot-title">AI and mathematics viewpoints</title>')
+    out.append('  <desc id="plot-desc">A scatter plot. The horizontal axis is evidence basis from speculative to data-supported. '
+               'The vertical axis is outlook from anxious to hopeful. Circle size represents provisional source reliability.</desc>')
+    out.append(f'  <rect class="frame" x="{LEFT}" y="{TOP}" width="{RIGHT-LEFT}" height="{BOTTOM-TOP}" />')
+    verticals = ''.join(f'<line x1="{round(LEFT+(RIGHT-LEFT)*p/100)}" y1="{TOP}" x2="{round(LEFT+(RIGHT-LEFT)*p/100)}" y2="{BOTTOM}" />' for p in (0, 25, 50, 75, 100))
+    horizontals = ''.join(f'<line x1="{LEFT}" y1="{round(BOTTOM-(BOTTOM-TOP)*p/100)}" x2="{RIGHT}" y2="{round(BOTTOM-(BOTTOM-TOP)*p/100)}" />' for p in (0, 25, 50, 75, 100))
+    out.append(f'  <g class="grid">{verticals}{horizontals}</g>')
+    ticks_x = ''.join(f'<text x="{round(LEFT+(RIGHT-LEFT)*p/100)}" y="465">{p}</text>' for p in (0, 25, 50, 75, 100))
+    ticks_y = ''.join(f'<text x="{LEFT-13}" y="{round(BOTTOM-(BOTTOM-TOP)*p/100)+4}">{p}</text>' for p in (0, 25, 50, 75, 100))
+    out.append(f'  <g class="tick" text-anchor="middle">{ticks_x}</g>')
+    out.append(f'  <g class="tick" text-anchor="end">{ticks_y}</g>')
+    out.append('  <text class="axis-label" x="472" y="520" text-anchor="middle">Evidence basis: speculative (0) → data-supported (100)</text>')
+    out.append('  <text class="axis-label" x="25" y="240" text-anchor="middle" transform="rotate(-90 25 240)">Outlook: anxious (0) → hopeful (100)</text>')
+
+    label_points = []
+    for key, (_, colour) in mathchat.MAP_CATEGORIES.items():
+        points = by_category.get(key, [])
+        if not points:
+            continue
+        markers = ''.join(
+            f'<circle class="point" cx="{p["x"]}" cy="{p["y"]}" r="{p["r"]}">'
+            f'<title>{escape(p["name"])} — outlook {p["outlook"]}, evidence {p["evidence"]}, reliability {p["reliability"]}</title></circle>'
+            for p in points)
+        out.append(f'  <g data-category="{key}" fill="{colour}">{markers}</g>')
+        label_points.extend((p['x'], p['y'], p['r'], p['label']) for p in points)
+
+    # Place the largest markers first; they are hardest to move around.
+    ordered = sorted(label_points, key=lambda p: -p[2])
+    markers = [(x, y, r) for x, y, r, _ in label_points]
+    labels = ''.join(
+        f'<text x="{round(lx)}" y="{round(ly)}"{"" if anchor == "start" else f" text-anchor={chr(34)}{anchor}{chr(34)}"}>{escape(text)}</text>'
+        for lx, ly, anchor, text in place_labels(ordered, markers))
+    out.append(f'  <g class="point-label">{labels}</g>')
+    out.append('</svg>')
+    return '\n'.join(out) + '\n'
+
+
+def category_chart():
+    ledger = {r['id']: r for r in mathchat.read('source-ledger.csv')}
+    rows = mathchat.read('openness-by-category.csv')
+    COLOURS = {'Educator': '#f3bb4d', 'Journalist': 'var(--chalk-white)', 'AI industry': '#9b8fe7'}
+    by_row = {}
+    for row in rows:
+        openness = int(row['openness_to_ai_use_0_reject_100_embrace'])
+        by_row.setdefault(row['category'], []).append(
+            dict(x=round(CAT_LEFT + openness / 100 * (CAT_RIGHT - CAT_LEFT)),
+                 name=ledger[row['id']]['author_or_source'], openness=openness,
+                 r=radius(int(next(a['reliability_0_lower_100_higher']
+                                   for a in mathchat.read('assessments.csv') if a['id'] == row['id']))) - 2))
+    out = ['<svg class="mathchat-plot" viewBox="0 0 920 390" role="img" aria-labelledby="category-plot-title category-plot-desc">',
+           '  <title id="category-plot-title">AI openness by source category</title>',
+           '  <desc id="category-plot-desc">Sources are grouped into educator, journalist, and AI-industry rows, '
+           'and positioned horizontally by openness to AI use.</desc>',
+           f'  <rect class="frame" x="{CAT_LEFT}" y="40" width="{CAT_RIGHT-CAT_LEFT}" height="240" />']
+    grid = ''.join(f'<line x1="{round(CAT_LEFT+(CAT_RIGHT-CAT_LEFT)*p/100)}" y1="40" x2="{round(CAT_LEFT+(CAT_RIGHT-CAT_LEFT)*p/100)}" y2="280" />' for p in (0, 25, 50, 75, 100))
+    grid += '<line x1="%d" y1="120" x2="%d" y2="120" /><line x1="%d" y1="200" x2="%d" y2="200" />' % (CAT_LEFT, CAT_RIGHT, CAT_LEFT, CAT_RIGHT)
+    out.append(f'  <g class="grid">{grid}</g>')
+    ticks = ''.join(f'<text x="{round(CAT_LEFT+(CAT_RIGHT-CAT_LEFT)*p/100)}" y="305">{p}</text>' for p in (0, 25, 50, 75, 100))
+    out.append(f'  <g class="tick" text-anchor="middle">{ticks}</g>')
+    rows_label = ''.join(f'<text x="{CAT_LEFT-15}" y="{y+5}">{name}</text>' for name, y in ROW_Y.items())
+    out.append(f'  <g class="axis-label" text-anchor="end">{rows_label}</g>')
+    out.append(f'  <text class="axis-label" x="{round((CAT_LEFT+CAT_RIGHT)/2)}" y="355" text-anchor="middle">Openness to AI use: reject (0) → actively embrace (100)</text>')
+    for name, y in ROW_Y.items():
+        points = sorted(by_row.get(name, []), key=lambda p: p['x'])
+        # Stagger within the row so equal scores do not overlap.
+        markers = ''
+        for i, p in enumerate(points):
+            cy = y - 5 + (i % 2) * 20
+            markers += (f'<circle class="point" cx="{p["x"]}" cy="{cy}" r="{p["r"]}">'
+                        f'<title>{escape(p["name"])} — {p["openness"]}</title></circle>')
+        out.append(f'  <g fill="{COLOURS[name]}">{markers}</g>')
+    out.append('</svg>')
+    return '\n'.join(out) + '\n'
+
+
+def main(site_root):
+    includes = Path(site_root) / '_includes'
+    includes.mkdir(parents=True, exist_ok=True)
+    (includes / 'mathchat-viewpoint-map.html').write_text(viewpoint_map())
+    (includes / 'mathchat-category-chart.html').write_text(category_chart())
+    print(f'wrote {includes}/mathchat-viewpoint-map.html and mathchat-category-chart.html')
+
+
+if __name__ == '__main__':
+    main(sys.argv[1] if len(sys.argv) > 1 else mathchat.ROOT.parent / 'algeboy.github.io')

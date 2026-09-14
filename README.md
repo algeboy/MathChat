@@ -24,6 +24,7 @@ Scores refer to a specific source's argument, never an author's worth, intellige
 - [Review snapshots and access record](snapshots/README.md)
 - [Initial prompt and review record](prompts/INITIAL-REVIEW-RECORD.md)
 - [How to contribute](CONTRIBUTING.md)
+- [Updating the data](scripts/README.md) — add a source and publish it with two commands
 
 ## Contribute
 

@@ -1,25 +1,25 @@
 id,published,date_display,earliest,latest,before_summer,before_announcement,date_basis,source_url
-su,2026-08-20,2026-08-20,2026-08-20,2026-08-20,on_or_after,before,Source ledger publication field,https://francissu.substack.com/p/the-enduring-value-of-math-in-an
-bessis,2026-04-21,2026-04-21,2026-04-21,2026-04-21,before,before,Source ledger publication field,https://davidbessis.substack.com/p/the-fall-of-the-theorem-economy
-economist,2026-08-18,2026-08-18,2026-08-18,2026-08-18,on_or_after,before,Source ledger publication field,https://www.economist.com/graphic-detail/2026/08/18/does-ai-stop-children-from-learning
-yahoo,2026,2026,2026-01-01,2026-12-31,uncertain,uncertain,Source ledger publication field,https://www.yahoo.com/news/science/articles/results-middle-high-school-students-120300584.html
-williamson,2026,2026,2026-01-01,2026-12-31,uncertain,uncertain,Source ledger publication field,https://www.maths.usyd.edu.au/u/geordie/
-tao,2026-08-19,2026-08-19,2026-08-19,2026-08-19,on_or_after,before,Source ledger publication field,https://arxiv.org/abs/2608.16753
-weinreich,2026-08-03,2026-08-03,2026-08-03,2026-08-03,on_or_after,before,Source ledger publication field,https://arxiv.org/abs/2608.02859
-leiden,2026-06-02,2026-06-02,2026-06-02,2026-06-02,on_or_after,before,Source ledger publication field,https://leidendeclaration.ai/
-snakeoil,2025,2025,2025-01-01,2025-12-31,before,before,Source ledger publication field,https://www.aisnakeoil.com/
-gowers,2025-2026,2025-2026,2025-01-01,2026-12-31,uncertain,uncertain,Source ledger publication field,https://gowers.wordpress.com/2025/
 avigad,2026,2026,2026-01-01,2026-12-31,uncertain,uncertain,Source ledger publication field,https://arxiv.org/abs/2603.03684
-wolfram,2025,2025-06-17,2025-06-17,2025-06-17,before,before,Date inferred from source URL path; not independently verified,https://blogs.lse.ac.uk/maths/2025/06/17/fixing-education-for-the-ai-age-conrad-wolfram/
-tsimerman,2026,2026-07,2026-07-01,2026-07-31,on_or_after,before,Date inferred from source URL path; not independently verified,https://www.theatlantic.com/technology/2026/07/jacob-tsimerman-math-fields-medal-openai/688120/
-lecun,2026,2026-04-01,2026-04-01,2026-04-01,before,before,Date inferred from source URL path; not independently verified,https://www.brown.edu/news/2026-04-01/yann-lecun-artificial-intelligence-pioneer
-riehl,2025,2025-04-10,2025-04-10,2025-04-10,before,before,Date inferred from source URL path; not independently verified,https://simons.berkeley.edu/talks/emily-riehl-johns-hopkins-university-2025-04-10
-lanier,2014,2014-04-01,2014-04-01,2014-04-01,before,before,Date inferred from source URL path; not independently verified,https://www.thefiscaltimes.com/Articles/2014/04/01/Facebook-and-Extremely-Creepy-Possibilities-Virtual-Reality
-marcus,2026,2026,2026-01-01,2026-12-31,uncertain,uncertain,Source ledger publication field,https://www.worldsciencefestival.com/videos/the-uncomfortable-truth-about-ai-reasoning/
-cepelewicz,2025,2025-04-30,2025-04-30,2025-04-30,before,before,Date inferred from source URL path; not independently verified,https://www.quantamagazine.org/mathematical-beauty-truth-and-proof-in-the-age-of-ai-20250430/
-strogatz,2024,2024-11-07,2024-11-07,2024-11-07,before,before,Date inferred from source URL path; not independently verified,https://www.quantamagazine.org/how-is-ai-changing-the-science-of-prediction-20241107/
+bessis,2026-04-21,2026-04-21,2026-04-21,2026-04-21,before,before,Source ledger publication field,https://davidbessis.substack.com/p/the-fall-of-the-theorem-economy
 carroll,2025,2025-11-24,2025-11-24,2025-11-24,before,before,Date inferred from source URL path; not independently verified,https://preposterousuniverse.com/podcast/2025/11/24/336-anil-ananthaswamy-on-the-mathematics-of-neural-nets-and-ai/
-jaimungal,2025,2025,2025-01-01,2025-12-31,before,before,Source ledger publication field,https://podscripts.co/podcasts/theories-of-everything-with-curt-jaimungal/the-ai-math-that-left-number-theorists-speechless
+cepelewicz,2025,2025-04-30,2025-04-30,2025-04-30,before,before,Date inferred from source URL path; not independently verified,https://www.quantamagazine.org/mathematical-beauty-truth-and-proof-in-the-age-of-ai-20250430/
+economist,2026-08-18,2026-08-18,2026-08-18,2026-08-18,on_or_after,before,Source ledger publication field,https://www.economist.com/graphic-detail/2026/08/18/does-ai-stop-children-from-learning
+gowers,2025-2026,2025-2026,2025-01-01,2026-12-31,uncertain,uncertain,Source ledger publication field,https://gowers.wordpress.com/2025/
 hossenfelder,2026,2026-02,2026-02-01,2026-02-28,before,before,Date inferred from source URL path; not independently verified,https://backreaction.blogspot.com/2026/02/the-ai-maths-revolution-has-begun.html
+jaimungal,2025,2025,2025-01-01,2025-12-31,before,before,Source ledger publication field,https://podscripts.co/podcasts/theories-of-everything-with-curt-jaimungal/the-ai-math-that-left-number-theorists-speechless
 keating,2025,2025,2025-01-01,2025-12-31,before,before,Source ledger publication field,https://podcasts.apple.com/us/podcast/can-ai-help-us-solve-the-hardest-problems-in/id1169885840?i=1000743242546
+lanier,2014,2014-04-01,2014-04-01,2014-04-01,before,before,Date inferred from source URL path; not independently verified,https://www.thefiscaltimes.com/Articles/2014/04/01/Facebook-and-Extremely-Creepy-Possibilities-Virtual-Reality
+lecun,2026,2026-04-01,2026-04-01,2026-04-01,before,before,Date inferred from source URL path; not independently verified,https://www.brown.edu/news/2026-04-01/yann-lecun-artificial-intelligence-pioneer
+leiden,2026-06-02,2026-06-02,2026-06-02,2026-06-02,on_or_after,before,Source ledger publication field,https://leidendeclaration.ai/
+marcus,2026,2026,2026-01-01,2026-12-31,uncertain,uncertain,Source ledger publication field,https://www.worldsciencefestival.com/videos/the-uncomfortable-truth-about-ai-reasoning/
+riehl,2025,2025-04-10,2025-04-10,2025-04-10,before,before,Date inferred from source URL path; not independently verified,https://simons.berkeley.edu/talks/emily-riehl-johns-hopkins-university-2025-04-10
+snakeoil,2025,2025,2025-01-01,2025-12-31,before,before,Source ledger publication field,https://www.aisnakeoil.com/
 stephenwolfram,2026,2026,2026-01-01,2026-12-31,uncertain,uncertain,Source ledger publication field,https://www.wolfram.com/artificial-intelligence/
+strogatz,2024,2024-11-07,2024-11-07,2024-11-07,before,before,Date inferred from source URL path; not independently verified,https://www.quantamagazine.org/how-is-ai-changing-the-science-of-prediction-20241107/
+su,2026-08-20,2026-08-20,2026-08-20,2026-08-20,on_or_after,before,Source ledger publication field,https://francissu.substack.com/p/the-enduring-value-of-math-in-an
+tao,2026-08-19,2026-08-19,2026-08-19,2026-08-19,on_or_after,before,Source ledger publication field,https://arxiv.org/abs/2608.16753
+tsimerman,2026,2026-07,2026-07-01,2026-07-31,on_or_after,before,Date inferred from source URL path; not independently verified,https://www.theatlantic.com/technology/2026/07/jacob-tsimerman-math-fields-medal-openai/688120/
+weinreich,2026-08-03,2026-08-03,2026-08-03,2026-08-03,on_or_after,before,Source ledger publication field,https://arxiv.org/abs/2608.02859
+williamson,2026,2026,2026-01-01,2026-12-31,uncertain,uncertain,Source ledger publication field,https://www.maths.usyd.edu.au/u/geordie/
+wolfram,2025,2025-06-17,2025-06-17,2025-06-17,before,before,Date inferred from source URL path; not independently verified,https://blogs.lse.ac.uk/maths/2025/06/17/fixing-education-for-the-ai-age-conrad-wolfram/
+yahoo,2026,2026,2026-01-01,2026-12-31,uncertain,uncertain,Source ledger publication field,https://www.yahoo.com/news/science/articles/results-middle-high-school-students-120300584.html
