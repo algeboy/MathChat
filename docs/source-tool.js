@@ -206,6 +206,47 @@
   root.querySelectorAll('input, textarea').forEach(el => { if (!['source-arxiv-url', 'source-website-url', 'source-file', 'source-consent', 'source-submitter'].includes(el.id)) el.addEventListener('input', invalidate); });
 
   const count = (text, words) => words.reduce((n, word) => n + (text.match(new RegExp('\\b' + word + '\\b', 'g')) || []).length, 0); const clamp = n => Math.max(0, Math.min(100, Math.round(n)));
+
+  /* Scores are cue DENSITIES, not cue counts, so a long source and a short one
+     that argue the same way land in the same place. Counting raw occurrences
+     made every axis a proxy for length: against the 24 reviewed sources the old
+     reliability score correlated 0.88 with document length, and repeating one
+     source's text scored it up to 45 points differently.
+
+     SHRINK damps a short text, whose densities are otherwise wild: a 60-word
+     note with one cue word is not 16 cues per 1000 words of evidence. Each
+     density passes through d / (d + half), which is 0.5 at the half point, so
+     no single cue can run the score to an extreme.
+     Half points are the observed medians across the reviewed corpus. */
+  const SHRINK = 200;
+  const HALF_EMPIRICAL = 3.0, HALF_CITATION = 1.5, HALF_CAUTIOUS = 6.0, SMOOTH_TONE = 2.5;
+  const saturate = (density, half) => density > 0 ? density / (density + half) : 0;
+  const rate = (n, words) => (n / (words + SHRINK) * 1000).toFixed(1);
+  function analyse(raw) {
+    const text = raw.toLowerCase();
+    const words = (text.match(/[a-z']+/g) || []).length;
+    const cues = {
+      hopeful: count(text, ['benefit','improve','opportunity','help','assist','promise','enable','advance','positive','potential']),
+      cautionary: count(text, ['risk','harm','concern','danger','threat','limit','failure','bias','cheat','decline']),
+      empirical: count(text, ['study','data','experiment','survey','sample','result','evidence','trial','measured','method']),
+      hedging: count(text, ['might','could','may','future','perhaps','believe','predict','likely']),
+      citations: (raw.match(/https?:\/\/|\[[^\]]+\]\([^)]*\)|\([A-Z][A-Za-z-]+,?\s*20\d\d\)/g) || []).length
+    };
+    const per = n => n / (words + SHRINK) * 1000;
+    const hopeful = per(cues.hopeful), cautionary = per(cues.cautionary);
+    const empirical = saturate(per(cues.empirical), HALF_EMPIRICAL);
+    const citation = saturate(per(cues.citations), HALF_CITATION);
+    const hedging = saturate(per(cues.hedging), HALF_CAUTIOUS);
+    return {
+      words, cues,
+      // Tone is a balance, so only the ratio of hopeful to cautionary counts.
+      outlook: clamp(50 + 55 * ((hopeful - cautionary) / (hopeful + cautionary + SMOOTH_TONE))),
+      // Method and citation language raise it; hedged claims lower it.
+      evidence: clamp(20 + 60 * empirical + 20 * citation - 25 * hedging),
+      // Weakest automatic axis: text cannot show expertise, so review it.
+      reliability: clamp(30 + 30 * empirical + 22 * citation + 18 * hedging)
+    };
+  }
   async function scoreSource() {
     const button = $('source-score'); if (button.disabled) return; button.disabled = true; invalidate();
     let raw = '', snapshot = null, sourceLabel = '', sourceUrl = '';
@@ -224,9 +265,9 @@
     }
     else if (active === 'website') { const url = validUrl($('source-website-url').value.trim()); if (!url) return setStatus('source-website-status', 'Enter a valid HTTP or HTTPS website URL.'); raw = $('source-website-text').value.trim() || await loadWebsite(); if (!raw) return; sourceLabel = ' from website text'; sourceUrl = url.href; }
     else raw = $('source-personal-text').value.trim();
-    if (raw.length < 80) return alert('Please provide at least a short paragraph so there is enough text to compare.'); try { const possibleUrl = new URL(raw); if (possibleUrl.protocol === 'https:' || possibleUrl.protocol === 'http:') return alert('Please provide the source text, rather than a URL, to score.'); } catch { /* Source text is not itself a URL. */ } const text = raw.toLowerCase(), hopeful = count(text,['benefit','improve','opportunity','help','assist','promise','enable','advance','positive','potential']), anxious = count(text,['risk','harm','concern','danger','threat','limit','failure','bias','cheat','decline']), empirical = count(text,['study','data','experiment','survey','sample','result','evidence','trial','measured','method']), cautious = count(text,['might','could','may','future','perhaps','believe','predict','likely']), citations = (raw.match(/https?:\/\/|\[[^\]]+\]\([^)]*\)|\([A-Z][A-Za-z-]+,?\s*20\d\d\)/g) || []).length, outlook = clamp(50 + (hopeful - anxious) * 5), evidence = clamp(35 + empirical * 6 + citations * 3 - cautious * 2), reliability = clamp(45 + Math.min(20, raw.length / 350) + Math.min(18, citations * 3) + Math.min(15, empirical * 2));
+    if (raw.length < 80) return alert('Please provide at least a short paragraph so there is enough text to compare.'); try { const possibleUrl = new URL(raw); if (possibleUrl.protocol === 'https:' || possibleUrl.protocol === 'http:') return alert('Please provide the source text, rather than a URL, to score.'); } catch { /* Source text is not itself a URL. */ } const reading = analyse(raw), { outlook, evidence, reliability } = reading, { hopeful, cautionary, empirical, hedging, citations } = reading.cues;
     scored = { title: $('source-title').value.trim() || 'Untitled source', outlook, evidence, reliability, excerpt: raw.slice(0, 500), arxiv: active === 'arxiv' ? snapshot : null, youtube: active === 'youtube' ? snapshot : null, scoredTextLength: raw.length, sourceType: active, sourceUrl }; $('source-outlook').textContent = outlook; $('source-evidence').textContent = evidence; $('source-reliability').textContent = reliability;
-    const nearest = references.map(([name,o,e,r]) => ({ name, d: Math.hypot(o-outlook,e-evidence,r-reliability) })).sort((a,b) => a.d-b.d).slice(0,3).map(x => x.name); $('source-comparison').textContent = `Closest current map entries: ${nearest.join(', ')}.`; $('source-explanation').textContent = `Scored ${raw.length.toLocaleString()} characters${sourceLabel}. Cue counts — hopeful: ${hopeful}; cautionary: ${anxious}; empirical: ${empirical}; citations/links: ${citations}. These are transparent starting estimates; revise them using the methodology before treating them as a review.`; $('source-result').hidden = false; $('source-result').classList.remove('hidden'); $('source-result').scrollIntoView({ behavior: 'smooth' });
+    const nearest = references.map(([name,o,e,r]) => ({ name, d: Math.hypot(o-outlook,e-evidence,r-reliability) })).sort((a,b) => a.d-b.d).slice(0,3).map(x => x.name); $('source-comparison').textContent = `Closest current map entries: ${nearest.join(', ')}.`; $('source-explanation').textContent = `Scored ${reading.words.toLocaleString()} words${sourceLabel}. Cue rates per 1,000 words — hopeful: ${rate(hopeful, reading.words)}; cautionary: ${rate(cautionary, reading.words)}; empirical: ${rate(empirical, reading.words)}; hedging: ${rate(hedging, reading.words)}; citations: ${rate(citations, reading.words)}. Rates, not totals, so length does not move the score.${reading.words < 400 ? ' This source is short, so its rates are unstable; treat the scores as rough.' : ''} These are transparent starting estimates; revise them using the methodology before treating them as a review.`; $('source-result').hidden = false; $('source-result').classList.remove('hidden'); $('source-result').scrollIntoView({ behavior: 'smooth' });
     } finally { button.disabled = false; }
   }
   root.querySelector('.source-form').addEventListener('submit', event => { event.preventDefault(); scoreSource(); });

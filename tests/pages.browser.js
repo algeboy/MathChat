@@ -45,12 +45,21 @@
     assert($('personal-text').value === text, 'Local file reading');
     input('personal-text', text); $('score').click(); await settle();
     assert(!$('result').hidden, 'Personal text scores');
-    assert($('outlook').textContent === '45' && $('evidence').textContent === '63' && $('reliability').textContent === '55', 'Original cue scoring preserved');
+    assert($('outlook').textContent === '40' && $('evidence').textContent === '62' && $('reliability').textContent === '64', 'Density-based cue scoring');
     input('submitter', 'MathChat local test'); $('consent').click();
     assert(!$('result').hidden && !$('prepare').disabled, 'Consent keeps result and enables submission');
     $('prepare').click();
     assert($('submission-note').querySelector('a[href^="https://github.com/"]'), 'Prepared issue link');
     input('personal-text', text + ' Changed.'); assert($('result').hidden, 'Editing invalidates result');
+
+    // Length invariance: the same argument at 8x the length must score the same.
+    // Checked above 400 words, the point past which the tool stops warning that
+    // a source is too short for its cue rates to be stable.
+    const read = () => [$('outlook').textContent, $('evidence').textContent, $('reliability').textContent].map(Number);
+    const base = (text + ' ').repeat(40);
+    input('personal-text', base); $('score').click(); await settle(); const short = read();
+    input('personal-text', base.repeat(8)); $('score').click(); await settle(); const long = read();
+    assert(short.every((v, i) => Math.abs(v - long[i]) <= 2), 'Scores are length invariant, got ' + short + ' vs ' + long);
 
     // YouTube: the transcript is pasted, and the video record is best effort.
     $('tab-youtube').click(); input('youtube-url', 'https://www.youtube.com/watch?v=test1234567'); input('youtube-text', text);

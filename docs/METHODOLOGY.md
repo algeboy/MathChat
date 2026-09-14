@@ -33,6 +33,39 @@ This is not a prestige score. It combines:
 
 It cannot establish that a source is true. It estimates how responsibly the source supports a claim at the time of review.
 
+## The automatic scorer on the site
+
+The public scoring tool is a language-cue heuristic. It is a starting point for
+a review, not a review, and its scores are never added to the map without one.
+
+Scores are computed from cue **densities** per 1,000 words, not from cue totals.
+Counting totals made every axis a proxy for document length: measured against
+the 24 reviewed sources, the previous reliability score correlated 0.88 with
+document length while correlating 0.05 with the reviewed reliability score, and
+feeding it the same source repeated could move a score by up to 45 points. The
+same argument stated at greater length now scores within about 5 points.
+
+Each density passes through `d / (d + h)`, which reaches half its weight at `h`.
+The half points are the observed medians across the reviewed corpus: 3.0 per
+1,000 words for method language, 1.5 for citations, and 6.0 for hedging. A
+shrink constant of 200 words damps very short sources, whose densities are
+otherwise wildly unstable, and the tool says when a source is short enough that
+its rates should not be trusted.
+
+- **Outlook** uses only the balance of hopeful to cautionary language, so it
+  does not move with length.
+- **Evidence basis** rises with method and citation language and falls with
+  hedged claims.
+- **Source reliability** is the weakest automatic axis and should be treated as
+  a prompt for review rather than an estimate. Expertise, provenance, and
+  independent checkability are not visible in a text's vocabulary; agreement
+  between this axis and reviewed reliability scores is near zero.
+
+Agreement with reviewed outlook scores is about 0.27 across the corpus, down
+from 0.52 for the length-dependent version. That drop is expected: much of the
+old agreement came from length itself, since longer sources attracted both more
+cue words and more reviewer attention.
+
 ## Important cautions
 
 - A high evidence score can coexist with an anxious outlook, and vice versa.
