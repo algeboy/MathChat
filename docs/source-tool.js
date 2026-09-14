@@ -226,6 +226,21 @@
      density passes through d / (d + half), which is 0.5 at the half point, so
      no single cue can run the score to an extreme.
      Half points are the observed medians across the reviewed corpus. */
+  /* The scorer and the human review are different instruments, and before
+     calibration the scorer sat about 26 points below the review on evidence and
+     reliability. A new source therefore looked far more speculative and far less
+     reliable than comparable reviewed sources purely because of the scale.
+     These offsets put both on the same baseline. They are measured, not chosen:
+     run scripts/score-sources.js then scripts/calibrate.py in the MathChat
+     repository to reproduce them from the 24 reviewed sources.
+
+     Calibration aligns the baseline; it does not make the instruments agree.
+     Correlation with the reviewed scores is near zero (+0.14 outlook,
+     +0.11 evidence, -0.17 reliability), so after calibration a score still
+     typically sits this far from the reviewed one. TYPICAL_GAP is shown to the
+     reader so no one mistakes an automatic score for a review. */
+  const CALIBRATION = { outlook: -3, evidence: 26, reliability: 27 };
+  const TYPICAL_GAP = { outlook: 17, evidence: 16, reliability: 11 };
   const SHRINK = 200;
   const HALF_EMPIRICAL = 3.0, HALF_CITATION = 1.5, HALF_CAUTIOUS = 6.0, SMOOTH_TONE = 2.5;
   const saturate = (density, half) => density > 0 ? density / (density + half) : 0;
@@ -248,11 +263,11 @@
     return {
       words, cues,
       // Tone is a balance, so only the ratio of hopeful to cautionary counts.
-      outlook: clamp(50 + 55 * ((hopeful - cautionary) / (hopeful + cautionary + SMOOTH_TONE))),
+      outlook: clamp(50 + 55 * ((hopeful - cautionary) / (hopeful + cautionary + SMOOTH_TONE)) + CALIBRATION.outlook),
       // Method and citation language raise it; hedged claims lower it.
-      evidence: clamp(20 + 60 * empirical + 20 * citation - 25 * hedging),
+      evidence: clamp(20 + 60 * empirical + 20 * citation - 25 * hedging + CALIBRATION.evidence),
       // Weakest automatic axis: text cannot show expertise, so review it.
-      reliability: clamp(30 + 30 * empirical + 22 * citation + 18 * hedging)
+      reliability: clamp(30 + 30 * empirical + 22 * citation + 18 * hedging + CALIBRATION.reliability)
     };
   }
   async function scoreSource() {
@@ -275,7 +290,7 @@
     else raw = $('source-personal-text').value.trim();
     if (raw.length < 80) return alert('Please provide at least a short paragraph so there is enough text to compare.'); try { const possibleUrl = new URL(raw); if (possibleUrl.protocol === 'https:' || possibleUrl.protocol === 'http:') return alert('Please provide the source text, rather than a URL, to score.'); } catch { /* Source text is not itself a URL. */ } const reading = analyse(raw), { outlook, evidence, reliability } = reading, { hopeful, cautionary, empirical, hedging, citations } = reading.cues;
     scored = { title: $('source-title').value.trim() || 'Untitled source', outlook, evidence, reliability, excerpt: raw.slice(0, 500), arxiv: active === 'arxiv' ? snapshot : null, youtube: active === 'youtube' ? snapshot : null, scoredTextLength: raw.length, sourceType: active, sourceUrl }; $('source-outlook').textContent = outlook; $('source-evidence').textContent = evidence; $('source-reliability').textContent = reliability;
-    const nearest = references.map(([name,o,e,r]) => ({ name, d: Math.hypot(o-outlook,e-evidence,r-reliability) })).sort((a,b) => a.d-b.d).slice(0,3).map(x => x.name); $('source-comparison').textContent = `Closest current map entries: ${nearest.join(', ')}.`; $('source-explanation').textContent = `Scored ${reading.words.toLocaleString()} words${sourceLabel}. Cue rates per 1,000 words — hopeful: ${rate(hopeful, reading.words)}; cautionary: ${rate(cautionary, reading.words)}; empirical: ${rate(empirical, reading.words)}; hedging: ${rate(hedging, reading.words)}; citations: ${rate(citations, reading.words)}. Rates, not totals, so length does not move the score.${reading.words < 400 ? ' This source is short, so its rates are unstable; treat the scores as rough.' : ''} These are transparent starting estimates; revise them using the methodology before treating them as a review.`; $('source-result').hidden = false; $('source-result').classList.remove('hidden'); $('source-result').scrollIntoView({ behavior: 'smooth' });
+    const nearest = references.map(([name,o,e,r]) => ({ name, d: Math.hypot(o-outlook,e-evidence,r-reliability) })).sort((a,b) => a.d-b.d).slice(0,3).map(x => x.name); $('source-comparison').textContent = `Closest current map entries: ${nearest.join(', ')}.`; $('source-explanation').textContent = `Scored ${reading.words.toLocaleString()} words${sourceLabel}. Cue rates per 1,000 words — hopeful: ${rate(hopeful, reading.words)}; cautionary: ${rate(cautionary, reading.words)}; empirical: ${rate(empirical, reading.words)}; hedging: ${rate(hedging, reading.words)}; citations: ${rate(citations, reading.words)}. Rates, not totals, so length does not move the score.${reading.words < 400 ? ' This source is short, so its rates are unstable; treat the scores as rough.' : ''} Scores are on the same baseline as the reviewed sources on the map, but this is a language heuristic: against those sources it typically lands ${TYPICAL_GAP.outlook} points from the reviewed outlook, ${TYPICAL_GAP.evidence} from the evidence basis and ${TYPICAL_GAP.reliability} from the reliability. Treat it as a starting point for review, not a review.`; $('source-result').hidden = false; $('source-result').classList.remove('hidden'); $('source-result').scrollIntoView({ behavior: 'smooth' });
     } finally { button.disabled = false; }
   }
   root.querySelector('.source-form').addEventListener('submit', event => { event.preventDefault(); scoreSource(); });

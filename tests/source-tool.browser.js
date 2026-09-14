@@ -35,7 +35,7 @@
     assert($('personal-text').value === text, 'Local file reading');
     input('personal-text', text); $('score').click(); await settle();
     assert(!$('result').hidden, 'Personal text scores');
-    assert($('outlook').textContent === '40' && $('evidence').textContent === '62' && $('reliability').textContent === '64', 'Density-based cue scoring');
+    assert($('outlook').textContent === '37' && $('evidence').textContent === '88' && $('reliability').textContent === '91', 'Density-based cue scoring, calibrated to the reviewed baseline');
     input('submitter', 'MathChat local test'); $('consent').click();
     assert(!$('result').hidden && !$('prepare').disabled, 'Consent keeps result and enables submission');
     $('prepare').click();

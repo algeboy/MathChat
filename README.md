@@ -18,7 +18,8 @@ Scores refer to a specific source's argument, never an author's worth, intellige
 - [Interactive HTML viewpoint map](docs/index.html)
 - [Methodology and scoring rubric](docs/METHODOLOGY.md)
 - [Source ledger](data/source-ledger.csv)
-- [Provisional assessments](data/assessments.csv)
+- [Provisional assessments](data/assessments.csv) — the reviewed scores the map draws
+- [Automatic scores for the same sources](data/auto-scores.csv) — what the site's scoring tool produces, for comparison
 - [AI openness by source category](data/openness-by-category.csv)
 - [Declared concern coverage](data/concern-coverage.csv) — education, research mathematics, and jobs in mathematics
 - [Review snapshots and access record](snapshots/README.md)

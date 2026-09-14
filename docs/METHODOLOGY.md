@@ -61,10 +61,41 @@ its rates should not be trusted.
   independent checkability are not visible in a text's vocabulary; agreement
   between this axis and reviewed reliability scores is near zero.
 
-Agreement with reviewed outlook scores is about 0.27 across the corpus, down
-from 0.52 for the length-dependent version. That drop is expected: much of the
-old agreement came from length itself, since longer sources attracted both more
-cue words and more reviewer attention.
+## Calibration against the reviewed scores
+
+The scorer and the review are two different instruments, so the scorer has been
+measured against all 24 reviewed sources rather than assumed to agree with them.
+`scripts/score-sources.js` runs the published formula over every source in the
+ledger and writes `data/auto-scores.csv`; `scripts/calibrate.py` compares that
+with `data/assessments.csv`.
+
+Before calibration the scorer sat about 26 points below the review on evidence
+and reliability. A newly submitted source therefore looked far more speculative
+and far less reliable than comparable reviewed sources purely because of the
+scale. A measured offset now puts both on the same baseline, which cuts the
+typical gap from a reviewed score substantially:
+
+| Axis | Correlation with review | Typical gap before | Typical gap after |
+| --- | ---: | ---: | ---: |
+| Outlook | +0.14 | 17 | 17 |
+| Evidence basis | +0.11 | 27 | 16 |
+| Source reliability | −0.17 | 27 | 11 |
+
+Calibration aligns the baseline. It does not make the two instruments agree, and
+the correlations show they largely do not. **An automatic score is a starting
+point for a review, never a substitute for one**, and the tool states its typical
+gap next to every score it reports.
+
+The failures are not evenly spread; they are worst exactly where reading matters.
+Max Weinreich argues against AI-generated mathematics and is reviewed at outlook
+12, but scores about 74 automatically, because the argument is carried by meaning
+rather than vocabulary. The Economist's report on AI and learning is reviewed at
+28 and scores about 88. No rescaling can repair errors of that kind, which is why
+the reviewed scores in `data/assessments.csv`, not the automatic ones, are what
+the map draws.
+
+Re-run both scripts after changing the corpus or the cue lists. `calibrate.py`
+reports any remaining drift and says when no change is needed.
 
 ## Important cautions
 
