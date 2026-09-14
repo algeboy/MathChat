@@ -53,3 +53,14 @@ The categories and scores are descriptive, provisional review aids. They are not
 ## Review protocol
 
 For each proposed source, reviewers should record: the central claim; scope; source type; supporting evidence; notable limits; candidate scores; and a short rationale. Score changes should be documented in a pull request or issue.
+
+## Calls to action and jobs/careers
+
+[`source-topics.csv`](../data/source-topics.csv) records two additional source-level classifications used by the separate chart pages:
+
+- **Call to action:** an explicit recommendation for people or institutions to act.
+- **Jobs/careers:** an explicit judgment about employment, hiring, promotion, professional roles, or career training. Research-method claims alone do not qualify.
+
+`recorded` means the review captures such a position. `not_recorded` means it has not been established by the current review, not that the source takes no position. Each recorded position has a paraphrase, source URL, and review basis. The initial coding combines existing review notes with targeted source checks for Bessis, Tao, Weinreich, Conrad Wolfram, Stephen Wolfram, and Tsimerman; it is not an exhaustive rereview of all sources. Bessis, Tao, and Tsimerman concern academic rewards or career pathways, not general labor-market forecasts.
+
+This classification is distinct from `concern-coverage.csv`, which counts only explicitly declared scope and therefore cannot establish whether the full source discusses employment. The GitHub Pages site uses copies of the topic CSV in `_data/mathchat_source_topics.csv` and `assets/data/mathchat-source-topics.csv`; refresh both when the review changes.
