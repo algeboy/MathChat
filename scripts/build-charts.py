@@ -121,39 +121,52 @@ def viewpoint_map():
 
 
 def category_chart():
+    """Openness by category. Rows come from the data, so a category that is new
+    to the ledger gets its own row instead of silently vanishing from the chart."""
     ledger = {r['id']: r for r in mathchat.read('source-ledger.csv')}
+    reliability = {r['id']: int(r['reliability_0_lower_100_higher'])
+                   for r in mathchat.read('assessments.csv')}
     rows = mathchat.read('openness-by-category.csv')
-    COLOURS = {'Educator': '#f3bb4d', 'Journalist': 'var(--chalk-white)', 'AI industry': '#9b8fe7'}
+
+    present = [c for c in mathchat.CATEGORIES if any(r['category'] == c for r in rows)]
+    present += sorted({r['category'] for r in rows} - set(present))
+    top, bottom = 40, 40 + 80 * len(present)
+    band = (bottom - top) / len(present)
+    row_y = {name: round(top + band * (i + 0.5)) for i, name in enumerate(present)}
+    palette = ['#f3bb4d', 'var(--chalk-white)', '#9b8fe7', '#d981b2', '#66c5b9']
+    colours = {name: palette[i % len(palette)] for i, name in enumerate(present)}
+
     by_row = {}
     for row in rows:
         openness = int(row['openness_to_ai_use_0_reject_100_embrace'])
-        by_row.setdefault(row['category'], []).append(
-            dict(x=round(CAT_LEFT + openness / 100 * (CAT_RIGHT - CAT_LEFT)),
-                 name=ledger[row['id']]['author_or_source'], openness=openness,
-                 r=radius(int(next(a['reliability_0_lower_100_higher']
-                                   for a in mathchat.read('assessments.csv') if a['id'] == row['id']))) - 2))
-    out = ['<svg class="mathchat-plot" viewBox="0 0 920 390" role="img" aria-labelledby="category-plot-title category-plot-desc">',
+        by_row.setdefault(row['category'], []).append(dict(
+            x=round(CAT_LEFT + openness / 100 * (CAT_RIGHT - CAT_LEFT)),
+            name=ledger[row['id']]['author_or_source'], openness=openness,
+            r=max(6, radius(reliability[row['id']]) - 2)))
+
+    height = bottom + 110
+    out = [f'<svg class="mathchat-plot" viewBox="0 0 920 {height}" role="img" aria-labelledby="category-plot-title category-plot-desc">',
            '  <title id="category-plot-title">AI openness by source category</title>',
-           '  <desc id="category-plot-desc">Sources are grouped into educator, journalist, and AI-industry rows, '
-           'and positioned horizontally by openness to AI use.</desc>',
-           f'  <rect class="frame" x="{CAT_LEFT}" y="40" width="{CAT_RIGHT-CAT_LEFT}" height="240" />']
-    grid = ''.join(f'<line x1="{round(CAT_LEFT+(CAT_RIGHT-CAT_LEFT)*p/100)}" y1="40" x2="{round(CAT_LEFT+(CAT_RIGHT-CAT_LEFT)*p/100)}" y2="280" />' for p in (0, 25, 50, 75, 100))
-    grid += '<line x1="%d" y1="120" x2="%d" y2="120" /><line x1="%d" y1="200" x2="%d" y2="200" />' % (CAT_LEFT, CAT_RIGHT, CAT_LEFT, CAT_RIGHT)
+           f'  <desc id="category-plot-desc">Sources are grouped into {len(present)} rows by their primary public role '
+           f'({", ".join(present)}), and positioned horizontally by openness to AI use.</desc>',
+           f'  <rect class="frame" x="{CAT_LEFT}" y="{top}" width="{CAT_RIGHT-CAT_LEFT}" height="{bottom-top}" />']
+    grid = ''.join(f'<line x1="{round(CAT_LEFT+(CAT_RIGHT-CAT_LEFT)*p/100)}" y1="{top}" x2="{round(CAT_LEFT+(CAT_RIGHT-CAT_LEFT)*p/100)}" y2="{bottom}" />' for p in (0, 25, 50, 75, 100))
+    grid += ''.join(f'<line x1="{CAT_LEFT}" y1="{round(top+band*i)}" x2="{CAT_RIGHT}" y2="{round(top+band*i)}" />' for i in range(1, len(present)))
     out.append(f'  <g class="grid">{grid}</g>')
-    ticks = ''.join(f'<text x="{round(CAT_LEFT+(CAT_RIGHT-CAT_LEFT)*p/100)}" y="305">{p}</text>' for p in (0, 25, 50, 75, 100))
+    ticks = ''.join(f'<text x="{round(CAT_LEFT+(CAT_RIGHT-CAT_LEFT)*p/100)}" y="{bottom+25}">{p}</text>' for p in (0, 25, 50, 75, 100))
     out.append(f'  <g class="tick" text-anchor="middle">{ticks}</g>')
-    rows_label = ''.join(f'<text x="{CAT_LEFT-15}" y="{y+5}">{name}</text>' for name, y in ROW_Y.items())
-    out.append(f'  <g class="axis-label" text-anchor="end">{rows_label}</g>')
-    out.append(f'  <text class="axis-label" x="{round((CAT_LEFT+CAT_RIGHT)/2)}" y="355" text-anchor="middle">Openness to AI use: reject (0) → actively embrace (100)</text>')
-    for name, y in ROW_Y.items():
+    labels = ''.join(f'<text x="{CAT_LEFT-15}" y="{y+5}">{escape(name)}</text>' for name, y in row_y.items())
+    out.append(f'  <g class="axis-label" text-anchor="end">{labels}</g>')
+    out.append(f'  <text class="axis-label" x="{round((CAT_LEFT+CAT_RIGHT)/2)}" y="{bottom+75}" text-anchor="middle">Openness to AI use: reject (0) → actively embrace (100)</text>')
+    for name in present:
         points = sorted(by_row.get(name, []), key=lambda p: p['x'])
-        # Stagger within the row so equal scores do not overlap.
         markers = ''
-        for i, p in enumerate(points):
-            cy = y - 5 + (i % 2) * 20
-            markers += (f'<circle class="point" cx="{p["x"]}" cy="{cy}" r="{p["r"]}">'
-                        f'<title>{escape(p["name"])} — {p["openness"]}</title></circle>')
-        out.append(f'  <g fill="{COLOURS[name]}">{markers}</g>')
+        for i, point in enumerate(points):
+            # Stagger within the row so equal or close scores stay readable.
+            cy = row_y[name] - 10 + (i % 2) * 20
+            markers += (f'<circle class="point" cx="{point["x"]}" cy="{cy}" r="{point["r"]}">'
+                        f'<title>{escape(point["name"])} — {point["openness"]}</title></circle>')
+        out.append(f'  <g fill="{colours[name]}">{markers}</g>')
     out.append('</svg>')
     return '\n'.join(out) + '\n'
 
