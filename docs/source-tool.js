@@ -81,6 +81,7 @@
   const clean = value => (value || '').replace(/\s+/g, ' ').trim();
   const activate = name => {
     active = name; ++arxivRequest; ++youtubeRequest; ++websiteRequest; invalidate();
+    ['source-arxiv-status', 'source-youtube-status', 'source-website-status'].forEach(id => setStatus(id, ''));
     tabs.forEach(tab => { const selected = tab.id === 'source-tab-' + name; tab.setAttribute('aria-selected', String(selected)); tab.tabIndex = selected ? 0 : -1; });
     panels.forEach(panel => { panel.hidden = panel.id !== 'source-panel-' + name; });
   };
