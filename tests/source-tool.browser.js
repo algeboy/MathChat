@@ -41,8 +41,10 @@
     $('prepare').click();
     assert($('submission-note').querySelector('a[href^="https://github.com/"]'), 'Prepared issue link');
     input('personal-text', text + ' Changed.'); assert($('result').hidden, 'Editing invalidates result');
-    $('tab-youtube').click(); input('youtube-url', 'https://www.youtube.com/watch?v=test1234567'); input('youtube-text', text); $('score').click(); await settle();
-    assert(!$('result').hidden && $('explanation').textContent.includes('transcript'), 'YouTube transcript scores');
+    $('tab-youtube').click(); input('youtube-url', 'https://www.youtube.com/watch?v=test1234567'); input('youtube-text', text);
+    win.fetch = async () => { throw new Error('oEmbed blocked'); };
+    $('score').click(); await settle();
+    assert(!$('result').hidden && $('explanation').textContent.includes('transcript'), 'YouTube pasted transcript scores');
     $('tab-website').click(); input('website-url', 'https://example.org/article');
     win.fetch = async () => new win.Response('<article>' + text + '</article>');
     $('score').click(); await settle(); assert(!$('result').hidden, 'Website fetch scores');
@@ -51,12 +53,12 @@
     assert($('result').hidden && $('website-status').textContent.includes('Paste'), 'Blocked website offers fallback');
     input('website-text', text); $('score').click(); await settle(); assert(!$('result').hidden, 'Website pasted fallback scores');
     $('tab-arxiv').click(); input('arxiv-url', 'https://arxiv.org/abs/2401.12345');
-    win.fetch = async url => new win.Response(String(url).includes('export.arxiv') ? '<feed><entry><title>Test paper</title><summary>Abstract only</summary><author><name>Test Author</name></author></entry></feed>' : '<main>' + text.repeat(15) + '</main>');
+    win.fetch = async () => new win.Response('<html><body><div class="ltx_document"><h1 class="ltx_title_document">Test paper</h1><span class="ltx_personname">Test Author</span>' + text.repeat(15) + '</div></body></html>');
     $('score').click(); await settle(); assert(!$('result').hidden && $('explanation').textContent.includes('complete arXiv'), 'arXiv full paper scores');
     input('arxiv-url', 'https://arxiv.org/abs/2401.12346');
     win.fetch = async () => { throw new Error('Blocked fixture'); }; $('score').click(); await settle();
     assert($('result').hidden, 'Failed arXiv never scores stale text or abstract');
-    console.log('MathChat PASS: tabs, original scoring, consent, submission preview, invalidation, YouTube transcript, website success/fallback, arXiv success/failure.');
+    console.log('Preview PASS: the shared source tool mounts on the docs preview and scores every tab.');
   } finally {
     if (saved === null) win.localStorage.removeItem('mathchat-appendix-submissions'); else win.localStorage.setItem('mathchat-appendix-submissions', saved);
     frame.remove();
