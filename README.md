@@ -20,6 +20,7 @@ Scores refer to a specific source's argument, never an author's worth, intellige
 - [Source ledger](data/source-ledger.csv)
 - [Provisional assessments](data/assessments.csv)
 - [AI openness by source category](data/openness-by-category.csv)
+- [Declared concern coverage](data/concern-coverage.csv) — education, research mathematics, and jobs in mathematics
 - [Review snapshots and access record](snapshots/README.md)
 - [Initial prompt and review record](prompts/INITIAL-REVIEW-RECORD.md)
 - [How to contribute](CONTRIBUTING.md)
@@ -30,5 +31,8 @@ Please suggest authors, sources, score corrections, and better evidence through 
 
 ## License
 
-Repository-created materials are dedicated to the public domain under [CC0 1.0](LICENSE). Linked sources remain subject to their own authors' and publishers' rights; this repository stores links and review metadata rather than copied articles.
-- [Declared concern coverage](data/concern-coverage.csv) — education, research mathematics, and jobs in mathematics
+Unless a source says otherwise, original material in this repository and on the site is licensed under [Creative Commons Attribution–NonCommercial 4.0 International](LICENSE). Linked sources remain subject to their own authors' and publishers' rights; this repository stores links and review metadata rather than copied articles.
+
+## Community and content policy
+
+MathChat aims to be tidy, polite, and informative. Harmful speech, ad hominem attacks, and overtly political declarations are not permitted. The site owner may remove any content at any time, for any reason. Comments and submitted material may be hosted here from people whose public work informs these statistics, but they do not necessarily represent the views of the site owner or other contributors.
