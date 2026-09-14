@@ -120,3 +120,19 @@
 .mathchat-page .mathchat-review-map td, .mathchat-page .mathchat-review-map th { font-size: 1rem; vertical-align: top; }
 .mathchat-page .mathchat-review-map .num { text-align: right; white-space: nowrap; }
 .mathchat-page .mathchat-review-map td a { overflow-wrap: anywhere; }
+
+/* Submission status: the last step happens on GitHub, so the state is always
+   stated plainly and "ready" is never dressed up as done. */
+.mathchat-page .submit-state { display: inline-block; margin: 0 0 1rem; padding: .35rem .8rem; border-radius: .3rem; font-weight: 700; font-size: 1rem; }
+.mathchat-page .submit-state[data-state="draft"] { color: var(--chalk-dust); border: 2px dashed var(--chalk-dust); }
+.mathchat-page .submit-state[data-state="ready"] { color: var(--chalk-yellow); border: 2px dashed var(--chalk-yellow); }
+.mathchat-page .submit-state[data-state="sent"] { color: #8fe7a8; border: 2px solid #8fe7a8; }
+.mathchat-page .submit-steps { list-style: none; padding: 0; margin: 0 0 1rem; }
+.mathchat-page .submit-steps li { position: relative; padding-left: 2rem; margin: .45rem 0; font-size: 1rem; color: var(--chalk-dust); }
+.mathchat-page .submit-steps li::before { content: '○'; position: absolute; left: 0; }
+.mathchat-page .submit-steps li[data-done="true"] { color: var(--chalk-white); }
+.mathchat-page .submit-steps li[data-done="true"]::before { content: '✓'; color: #8fe7a8; }
+.mathchat-page .submit-next { margin-top: 1rem; }
+.mathchat-page .submit-warning { color: var(--chalk-yellow); font-size: 1rem; }
+.mathchat-page a.submit-action { display: inline-block; margin: .5rem 0; padding: .6rem 1rem; border: 2px solid var(--chalk-yellow); border-radius: .3rem; color: var(--chalk-white); text-decoration: none; font-weight: 700; }
+.mathchat-page a.submit-action:hover { color: var(--chalk-yellow); }

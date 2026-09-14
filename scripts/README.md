@@ -20,6 +20,24 @@ and refuses anything that would leave them inconsistent. `sync-site.py`
 rebuilds the derived data and charts, then copies everything the site needs.
 Commit both repositories afterwards to publish.
 
+## How a submission reaches you
+
+The site's scoring tool is the only way to propose a source. It opens a prefilled
+GitHub issue labelled `submission`, so blank issues must stay enabled in
+`.github/ISSUE_TEMPLATE/config.yml` for that link to keep working.
+
+When the issue is opened, `.github/workflows/submission.yml` parses it and
+comments with the parsed record, the fields still needing a reviewer's choice,
+and the commands to accept it. That comment is what lands in your notification
+email, so the notification carries everything needed to act.
+
+If email is not arriving, check that you are watching this repository for issues:
+**Watch → Custom → Issues** on the repository page, and that
+[notification settings](https://github.com/settings/notifications) send issue
+email. A repository owner is watching by default, but that can be turned off.
+
+Nothing is applied automatically. The workflow only reads the issue and comments.
+
 ## Applying a submission from the site
 
 The scoring tool opens a GitHub issue in a fixed layout. To apply an approved

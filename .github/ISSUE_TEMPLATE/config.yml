@@ -1,0 +1,7 @@
+# The scoring tool on the site is the only way to propose a source. It opens a
+# prefilled issue, so blank issues must stay enabled for that link to work.
+blank_issues_enabled: true
+contact_links:
+  - name: Add a source to the MathChat map
+    url: https://pleasedistribute.org/MathChat/#source-tool
+    about: Score a source with the MathChat tool. It prepares the submission for you; opening an issue by hand is not needed.

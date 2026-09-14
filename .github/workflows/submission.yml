@@ -1,0 +1,89 @@
+# Turn a submission from the site's scoring tool into something actionable.
+#
+# On a new issue this labels a genuine submission, parses it, and comments with
+# the record and the exact commands to accept it. The comment is what arrives in
+# the maintainer's notification email, so the notification carries the work.
+#
+# The issue body is untrusted input written by a stranger. It is passed through
+# an environment variable and a file, never interpolated into a shell command,
+# so nothing in it can run here. The job needs no secrets.
+name: Source submission
+
+on:
+  issues:
+    types: [opened, edited]
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  triage:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Save the issue body without interpolating it
+        env:
+          ISSUE_BODY: ${{ github.event.issue.body }}
+        run: printf '%s' "$ISSUE_BODY" > issue.txt
+
+      - name: Parse the submission
+        id: parse
+        run: |
+          if python3 scripts/issue-to-source.py issue.txt > parsed.json 2> warnings.txt; then
+            echo "ok=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "ok=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Comment with the record and the accept commands
+        if: steps.parse.outputs.ok == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          NUMBER: ${{ github.event.issue.number }}
+        run: |
+          gh issue edit "$NUMBER" --repo "$GITHUB_REPOSITORY" --add-label submission || true
+          {
+            echo "Parsed as a source submission from the scoring tool."
+            echo
+            echo "Scores in a submission are heuristic starting points. Against the reviewed"
+            echo "sources they typically land 17 points from the reviewed outlook, 16 from the"
+            echo "evidence basis and 11 from the reliability, so review them before publishing."
+            echo
+            echo '```json'
+            cat parsed.json
+            echo '```'
+            echo
+            if [ -s warnings.txt ]; then
+              echo "Fields a reviewer must still choose:"
+              echo
+              echo '```'
+              cat warnings.txt
+              echo '```'
+              echo
+            fi
+            echo "To accept it:"
+            echo
+            echo '```sh'
+            echo "gh issue view $NUMBER --json body -q .body > issue.txt"
+            echo "python3 scripts/issue-to-source.py issue.txt > new.json"
+            echo "# edit new.json: published, category, openness, map_category, and the scores"
+            echo "python3 scripts/add-source.py --json new.json"
+            echo "python3 scripts/sync-site.py"
+            echo '```'
+            echo
+            echo "Then commit and push this repository and the site repository."
+          } > comment.md
+          gh issue comment "$NUMBER" --repo "$GITHUB_REPOSITORY" --body-file comment.md
+
+      - name: Point a hand-written issue at the tool
+        if: steps.parse.outputs.ok == 'false'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          NUMBER: ${{ github.event.issue.number }}
+        run: |
+          if grep -qiE 'source|add|suggest|propose' issue.txt; then
+            gh issue comment "$NUMBER" --repo "$GITHUB_REPOSITORY" --body \
+              "Thanks. If this is proposing a source for the map, please add it with the [MathChat scoring tool](https://pleasedistribute.org/MathChat/#source-tool) instead. It reads the source text, scores it, and prepares a submission with the details a review needs, which a hand-written issue cannot provide. Other kinds of issue are fine here and need nothing further."
+          fi

@@ -59,7 +59,21 @@
       <h2>Provisional comparison</h2>
       <div class="scores"><div class="score"><b id="source-outlook">–</b>Outlook<br><small>anxious 0 → hopeful 100</small></div><div class="score"><b id="source-evidence">–</b>Evidence basis<br><small>speculative 0 → data-supported 100</small></div><div class="score"><b id="source-reliability">–</b>Source reliability<br><small>lower 0 → higher 100</small></div></div>
       <p id="source-comparison"></p><p class="note" id="source-explanation"></p>
-      <div class="card"><h2>Submit this source for review</h2><p>The map is a reviewed dataset, so submissions are not added automatically. Preparing a submission saves a private copy in this browser and opens a filled-in GitHub issue. A maintainer reviews it before it joins the public map and source ledger.</p><p class="note">Only continue if you have the right to share the title, excerpt, and scores.</p><div class="field"><label for="source-submitter">Your name</label><input id="source-submitter" type="text" autocomplete="name" placeholder="Name for the review record"><p class="note">Your name is required for a review submission and will be included in the prepared GitHub issue.</p></div><label><input id="source-consent" type="checkbox"> I consent to submit this tidy, polite, and informative summary for public review and possible inclusion in the MathChat appendix. I understand harmful speech, ad hominem attacks, and overtly political declarations are not permitted, and the site owner may remove content for any reason.</label><button id="source-prepare" type="button" disabled>Prepare appendix submission</button><p id="source-submission-note" class="note"></p></div>
+      <div class="card submit-card">
+        <h2>Submit this source for review</h2>
+        <p class="submit-state" id="source-submit-state" data-state="draft">Not submitted yet</p>
+        <ol class="submit-steps">
+          <li id="source-step-score" data-done="true">Score the source</li>
+          <li id="source-step-details" data-done="false">Add your name and agree to the content policy</li>
+          <li id="source-step-send" data-done="false">Open the issue on GitHub and press <strong>Submit new issue</strong> there</li>
+        </ol>
+        <p class="note">The map is a reviewed dataset, so nothing is added automatically. A maintainer reviews every submission before it joins the public map and source ledger. Only continue if you have the right to share the title, excerpt, and scores.</p>
+        <div class="field"><label for="source-submitter">Your name</label><input id="source-submitter" type="text" autocomplete="name" placeholder="Name for the review record"><p class="note">Your name is required, and appears in the submission.</p></div>
+        <label><input id="source-consent" type="checkbox"> I consent to submit this tidy, polite, and informative summary for public review and possible inclusion in the MathChat appendix. I understand harmful speech, ad hominem attacks, and overtly political declarations are not permitted, and the site owner may remove content for any reason.</label>
+        <button id="source-prepare" type="button" disabled>Continue to step 3</button>
+        <div id="source-submission-note" class="submit-next" hidden></div>
+        <label id="source-sent-wrap" hidden><input id="source-sent" type="checkbox"> I pressed “Submit new issue” on GitHub</label>
+      </div>
     </section>
     `;
 
@@ -67,7 +81,7 @@
   const tabs = [...root.querySelectorAll('[role="tab"]')];
   const panels = [...root.querySelectorAll('[role="tabpanel"]')];
   let active = 'arxiv', scored = null, arxivSnapshot = null, arxivPaperText = '', youtubeSnapshot = null, arxivRequest = 0, youtubeRequest = 0, websiteRequest = 0;
-  const invalidate = () => { scored = null; $('source-result').hidden = true; $('source-result').classList.add('hidden'); $('source-consent').checked = false; $('source-prepare').disabled = true; $('source-submission-note').replaceChildren(); };
+  const invalidate = () => { scored = null; $('source-result').hidden = true; $('source-result').classList.add('hidden'); $('source-consent').checked = false; $('source-prepare').disabled = true; const note = $('source-submission-note'); if (note) { note.replaceChildren(); note.hidden = true; } if ($('source-sent-wrap')) { $('source-sent-wrap').hidden = true; $('source-sent').checked = false; setSubmitState('draft'); } };
   const setStatus = (id, message) => { $(id).textContent = message; };
   const validUrl = (value, hosts) => {
     try { const url = new URL(value); return ['https:', 'http:'].includes(url.protocol) && (!hosts || hosts.includes(url.hostname.toLowerCase())) ? url : null; } catch { return null; }
@@ -211,7 +225,8 @@
   $('source-website-url').addEventListener('input', () => { ++websiteRequest; $('source-website-text').value = ''; invalidate(); });
   $('source-website-text').addEventListener('input', () => { ++websiteRequest; });
   $('source-file').addEventListener('change', async event => { const file = event.target.files[0]; if (!file) return; invalidate(); try { $('source-personal-text').value = await file.text(); if (!$('source-title').value.trim()) $('source-title').value = file.name.replace(/\.[^.]+$/, ''); } catch { alert('The selected file could not be read.'); } });
-  root.querySelectorAll('input, textarea').forEach(el => { if (!['source-arxiv-url', 'source-website-url', 'source-file', 'source-consent', 'source-submitter'].includes(el.id)) el.addEventListener('input', invalidate); });
+  root.querySelectorAll('input, textarea').forEach(el => { // Editing the source text invalidates a score; the submission controls must not.
+    if (!['source-arxiv-url', 'source-website-url', 'source-file', 'source-consent', 'source-submitter', 'source-sent'].includes(el.id)) el.addEventListener('input', invalidate); });
 
   const count = (text, words) => words.reduce((n, word) => n + (text.match(new RegExp('\\b' + word + '\\b', 'g')) || []).length, 0); const clamp = n => Math.max(0, Math.min(100, Math.round(n)));
 
@@ -295,5 +310,63 @@
   }
   root.querySelector('.source-form').addEventListener('submit', event => { event.preventDefault(); scoreSource(); });
   $('source-consent').addEventListener('change', event => { $('source-prepare').disabled = !scored || !event.target.checked; });
-  $('source-prepare').addEventListener('click', () => { if (!scored || !$('source-consent').checked) return; const submitterName = $('source-submitter').value.trim(); if (!submitterName) { $('source-submitter').focus(); return alert('Please enter your name before preparing a submission.'); } const entry = { ...scored, submitterName, submittedAt: new Date().toISOString(), consent: true, submissionConfirmed: true }; const entries = JSON.parse(localStorage.getItem('mathchat-appendix-submissions') || '[]'); entries.push(entry); localStorage.setItem('mathchat-appendix-submissions', JSON.stringify(entries)); const sourceDetails = entry.arxiv ? `\n\nSubmitter: ${entry.submitterName}\narXiv: ${entry.arxiv.url}\narXiv ID: ${entry.arxiv.id}\nAuthors: ${entry.arxiv.authors.map(a => a.name + (a.affiliation ? ` (${a.affiliation})` : '')).join('; ') || 'not listed'}\nScore input: complete arXiv HTML paper (${entry.scoredTextLength.toLocaleString()} characters; abstract was not scored)\nPosition summary (arXiv abstract):\n${entry.arxiv.summary || 'not available'}` : entry.youtube ? `\n\nSubmitter: ${entry.submitterName}\nYouTube: ${entry.youtube.url}\nChannel: ${entry.youtube.channelName || 'not listed'}\nScore input: pasted English transcript (${entry.scoredTextLength.toLocaleString()} characters; title and description were not scored)` : `\n\nSubmitter: ${entry.submitterName}${entry.sourceUrl ? `\nSource URL: ${entry.sourceUrl}` : ''}`; const issue = 'https://github.com/algeboy/MathChat/issues/new?title=' + encodeURIComponent('Appendix submission: ' + entry.title) + '&body=' + encodeURIComponent(`I consent to review and possible public inclusion. I confirm this submission is tidy, polite, and apolitical.\n\nTitle: ${entry.title}\nScores: outlook ${entry.outlook}, evidence ${entry.evidence}, reliability ${entry.reliability}${sourceDetails}\n\nExcerpt:\n${entry.excerpt}`); const note = $('source-submission-note'); note.replaceChildren('A private preview is now available in ', Object.assign(document.createElement('a'), { href: '/MathChat/appendix/', textContent: 'the appendix' }), '. To request public review, ', Object.assign(document.createElement('a'), { href: issue, target: '_blank', rel: 'noopener', textContent: 'open a prepared GitHub issue' }), '.'); });
+  /* Three states, always visible, because the last step happens on GitHub and
+     the site cannot see it. "Ready to send" is never described as submitted. */
+  function setSubmitState(state) {
+    const label = { draft: 'Not submitted yet', ready: 'Saved in this browser — not sent yet',
+                    sent: 'Submitted for review' }[state];
+    const node = $('source-submit-state');
+    node.dataset.state = state; node.textContent = label;
+    $('source-step-details').dataset.done = String(state !== 'draft');
+    $('source-step-send').dataset.done = String(state === 'sent');
+  }
+  const markSent = sent => {
+    const entries = JSON.parse(localStorage.getItem('mathchat-appendix-submissions') || '[]');
+    if (!entries.length) return;
+    entries[entries.length - 1].sentToReview = sent;
+    localStorage.setItem('mathchat-appendix-submissions', JSON.stringify(entries));
+    setSubmitState(sent ? 'sent' : 'ready');
+  };
+  $('source-sent').addEventListener('change', event => markSent(event.target.checked));
+
+  $('source-prepare').addEventListener('click', () => {
+    if (!scored || !$('source-consent').checked) return;
+    const submitterName = $('source-submitter').value.trim();
+    if (!submitterName) { $('source-submitter').focus(); return alert('Please enter your name before continuing.'); }
+    const entry = { ...scored, submitterName, submittedAt: new Date().toISOString(), consent: true,
+                    submissionConfirmed: true, sentToReview: false };
+    const entries = JSON.parse(localStorage.getItem('mathchat-appendix-submissions') || '[]');
+    entries.push(entry);
+    localStorage.setItem('mathchat-appendix-submissions', JSON.stringify(entries));
+
+    const sourceDetails = entry.arxiv
+      ? `\n\nSubmitter: ${entry.submitterName}\narXiv: ${entry.arxiv.url}\narXiv ID: ${entry.arxiv.id}\nAuthors: ${entry.arxiv.authors.map(a => a.name + (a.affiliation ? ` (${a.affiliation})` : '')).join('; ') || 'not listed'}\nScore input: complete arXiv HTML paper (${entry.scoredTextLength.toLocaleString()} characters; abstract was not scored)\nPosition summary (arXiv abstract):\n${entry.arxiv.summary || 'not available'}`
+      : entry.youtube
+      ? `\n\nSubmitter: ${entry.submitterName}\nYouTube: ${entry.youtube.url}\nChannel: ${entry.youtube.channelName || 'not listed'}\nScore input: pasted English transcript (${entry.scoredTextLength.toLocaleString()} characters; title and description were not scored)`
+      : `\n\nSubmitter: ${entry.submitterName}${entry.sourceUrl ? `\nSource URL: ${entry.sourceUrl}` : ''}`;
+    const issue = 'https://github.com/algeboy/MathChat/issues/new?labels=submission&title='
+      + encodeURIComponent('Source submission: ' + entry.title)
+      + '&body=' + encodeURIComponent(`I consent to review and possible public inclusion. I confirm this submission is tidy, polite, and apolitical.\n\nTitle: ${entry.title}\nScores: outlook ${entry.outlook}, evidence ${entry.evidence}, reliability ${entry.reliability}${sourceDetails}\n\nExcerpt:\n${entry.excerpt}`);
+
+    const note = $('source-submission-note');
+    note.replaceChildren();
+    const lead = document.createElement('p');
+    lead.className = 'submit-warning';
+    lead.textContent = 'Almost there. This is saved in your browser only. It reaches the maintainer when you open the issue and press “Submit new issue” on GitHub.';
+    const action = Object.assign(document.createElement('a'), {
+      href: issue, target: '_blank', rel: 'noopener', className: 'submit-action',
+      textContent: 'Open the submission on GitHub →'
+    });
+    action.addEventListener('click', () => { $('source-sent-wrap').hidden = false; });
+    const after = document.createElement('p');
+    after.className = 'note';
+    after.append('A GitHub account is needed for that step. Your saved copy is listed in ',
+                 Object.assign(document.createElement('a'), { href: '/MathChat/appendix/', textContent: 'the appendix' }), '.');
+    note.append(lead, action, after);
+    note.hidden = false;
+    $('source-sent').checked = false;
+    $('source-sent-wrap').hidden = true;
+    setSubmitState('ready');
+  });
+
 })();

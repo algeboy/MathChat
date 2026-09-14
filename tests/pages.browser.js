@@ -48,9 +48,21 @@
     assert($('outlook').textContent === '37' && $('evidence').textContent === '88' && $('reliability').textContent === '91', 'Density-based cue scoring, calibrated to the reviewed baseline');
     input('submitter', 'MathChat local test'); $('consent').click();
     assert(!$('result').hidden && !$('prepare').disabled, 'Consent keeps result and enables submission');
+
+    // Submission status must be explicit, and "saved" must never read as "sent".
+    const state = () => $('submit-state').dataset.state;
+    assert(state() === 'draft', 'Starts as not submitted');
     $('prepare').click();
     assert($('submission-note').querySelector('a[href^="https://github.com/"]'), 'Prepared issue link');
+    assert(state() === 'ready' && $('submit-state').textContent.includes('not sent'), 'Saved is reported as not sent');
+    assert($('sent-wrap').hidden, 'Confirmation appears only after opening the issue');
+    $('submission-note').querySelector('a.submit-action').click();
+    assert(!$('sent-wrap').hidden, 'Opening the issue reveals the confirmation');
+    $('sent').click();
+    assert(state() === 'sent' && !$('result').hidden, 'Confirming marks it submitted without clearing the result');
+    assert(JSON.parse(win.localStorage.getItem('mathchat-appendix-submissions')).pop().sentToReview === true, 'Sent state is recorded');
     input('personal-text', text + ' Changed.'); assert($('result').hidden, 'Editing invalidates result');
+    assert($('submit-state').dataset.state === 'draft', 'A new score starts from not submitted');
 
     // Length invariance: the same argument at 8x the length must score the same.
     // Checked above 400 words, the point past which the tool stops warning that
