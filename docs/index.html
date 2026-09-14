@@ -4,22 +4,38 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>AI and Mathematics: viewpoint map</title>
-  <style>
-    :root { color-scheme: light dark; font-family: system-ui, sans-serif; }
-    body { max-width: 1000px; margin: 2rem auto; padding: 0 1rem; color: CanvasText; background: Canvas; line-height: 1.5; }
-    h1 { margin-bottom: .25rem; } .lede { color: GrayText; }
-    svg { width: 100%; height: auto; border: 1px solid color-mix(in srgb, CanvasText 25%, transparent); }
-    .grid { stroke: color-mix(in srgb, CanvasText 20%, transparent); } .axis { stroke: CanvasText; }
-    .point { stroke: Canvas; stroke-width: 2; } .label { font-size: 11px; fill: CanvasText; }
-    .note { font-size: .9rem; color: GrayText; } code { background: color-mix(in srgb, CanvasText 9%, transparent); padding: .1rem .25rem; }
-  </style>
+  <link rel="stylesheet" href="/assets/css/main.css">
+  <link rel="stylesheet" href="mathchat.css">
+  <script src="source-tool.js" defer></script>
 </head>
 <body>
+<div class="chalkboard-frame"></div>
+<div class="chalkboard-content"><div class="mathchat-page">
+  <header class="site-header"><a class="brand" href="index.html">MathChat</a><nav aria-label="Main navigation"><a href="#source-tool">Add your own</a><a href="appendix.html">Appendix</a></nav></header>
+  <main>
+  <section class="intro">
   <h1>AI and mathematics: a transparent viewpoint map</h1>
   <p class="lede">Outlook on the vertical axis; evidence basis on the horizontal axis; marker size represents provisional source reliability.</p>
-  <p><a href="score-your-source.html"><strong>Try your own source</strong></a> — upload a text-based file, receive provisional scores, and optionally prepare an appendix submission.</p>
+  </section>
+  <section class="map-section" aria-label="Viewpoint map">
+  <div class="plot-scroll" tabindex="0" role="region" aria-label="Viewpoint plot; scroll horizontally on small screens">
   <svg id="chart" viewBox="0 0 900 560" role="img" aria-label="Scatter plot of sources by evidence basis, outlook, and reliability"></svg>
+  </div>
+  <p class="note map-caption">24 perspectives · Hover over a marker for its scores. Scores describe arguments, not people.</p>
+  </section>
+  <div id="source-tool"></div>
+  <noscript><p>Enable JavaScript to display the map and explore your own source.</p></noscript>
+  <section class="coverage" aria-labelledby="coverage-title">
+    <h2 id="coverage-title">Declared concern coverage</h2>
+    <p>Histogram of the 24 declared pieces that explicitly cover each concern. A piece may count in more than one concern; coverage is not a judgment of quality or position.</p>
+    <div id="coverage-chart" class="histogram" role="img" aria-label="Histogram showing concern coverage across declared pieces"></div>
+    <p class="note">Education: 6; research mathematics: 13; jobs in mathematics: 0. Jobs are currently an identified coverage gap, not evidence that the topic is unimportant. Derived from <a href="../data/concern-coverage.csv">concern-coverage.csv</a>, using the ledger's declared scope and notes only.</p>
+  </section>
+  </main>
+  <footer class="site-footer">
   <p class="note">Scores are provisional review judgments, not rankings of people. See <a href="score-your-source.html">the private scoring tool</a>, <a href="appendix.html">the appendix</a>, <a href="METHODOLOGY.md">methodology</a>, <a href="RESULTS.md">results</a>, and the CSV files in <code>data/</code>.</p>
+  <p class="policy"><strong>Community and content policy.</strong> Unless a source says otherwise, original material on this site is licensed under <a href="https://creativecommons.org/licenses/by-nc/4.0/">Creative Commons Attribution–NonCommercial 4.0 International</a>. We aim to keep discussion tidy, polite, and informative: harmful speech, ad hominem attacks, and overtly political declarations are not permitted. The site owner may remove any content at any time, for any reason. Comments and submitted material may be hosted here from people whose public work informs these statistics, but they do not necessarily represent the views of the site owner or other contributors.</p>
+  </footer>
   <script>
     const data = [
       ['Su',35,82,60],['Bessis',38,54,68],['Economist',86,28,72],['Yahoo',70,30,55],['Williamson',62,78,80],['Tao',78,61,88],['Weinreich',48,12,65],['Leiden',72,24,82],['AI Snake Oil',78,38,82],['Gowers',82,58,90],['Avigad',76,64,88],['Conrad Wolfram',68,72,78],['Stephen Wolfram',55,78,74],['Tsimerman',55,88,76],['LeCun',65,65,84],['Riehl',86,56,90],['Lanier',36,60,64],['Marcus',65,32,84],['Cepelewicz',76,64,82],['Strogatz',70,60,84],['Carroll',54,55,76],['Jaimungal',55,76,70],['Hossenfelder',45,58,64],['Keating',58,61,74]
@@ -33,20 +49,6 @@
     add('text',{x:m.l+w/2,y:545,'text-anchor':'middle'},'Evidence basis: speculative (0) to data-supported (100)');
     add('text',{x:20,y:m.t+h/2,transform:`rotate(-90 20 ${m.t+h/2})`,'text-anchor':'middle'},'Outlook: anxious (0) to hopeful (100)');
     data.forEach(([name,evidence,outlook,reliability],i)=>{const color=`hsl(${(i*47)%360} 55% 48%)`;const c=add('circle',{cx:x(evidence),cy:y(outlook),r:5+reliability/18,fill:color,class:'point'});const title=add('title',{},`${name}: outlook ${outlook}; evidence ${evidence}; reliability ${reliability}`);c.append(title);add('text',{x:x(evidence)+11,y:y(outlook)+4,class:'label'},name);});
-  </script>
-</body>
-</html>
-    .coverage { margin: 2rem 0; padding: 1rem; border: 1px solid color-mix(in srgb, CanvasText 25%, transparent); border-radius: .4rem; }
-    .coverage h2 { margin-top: 0; font-size: 1.2rem; } .histogram { display: grid; gap: .7rem; }
-    .histogram-row { display: grid; grid-template-columns: minmax(9rem, 13rem) 1fr auto; align-items: center; gap: .75rem; }
-    .bar-track { height: 1.4rem; background: color-mix(in srgb, CanvasText 12%, transparent); border-radius: .2rem; overflow: hidden; }
-    .bar { height: 100%; background: #3973ac; min-width: 0; } .count { font-variant-numeric: tabular-nums; }
-  <section class="coverage" aria-labelledby="coverage-title">
-    <h2 id="coverage-title">Declared concern coverage</h2>
-    <p>Histogram of the 24 declared pieces that explicitly cover each concern. A piece may count in more than one concern; coverage is not a judgment of quality or position.</p>
-    <div id="coverage-chart" class="histogram" role="img" aria-label="Histogram showing concern coverage across declared pieces"></div>
-    <p class="note">Education: 6; research mathematics: 13; jobs in mathematics: 0. Jobs are currently an identified coverage gap, not evidence that the topic is unimportant. Derived from <a href="../data/concern-coverage.csv">concern-coverage.csv</a>, using the ledger's declared scope and notes only.</p>
-  </section>
     const concerns = [
       ['Education', 6], ['Research mathematics', 13], ['Jobs in mathematics', 0]
     ], totalPieces = 24, coverageChart = document.getElementById('coverage-chart');
@@ -59,3 +61,7 @@
       const value = document.createElement('span'); value.className = 'count'; value.textContent = `${count} / ${totalPieces}`;
       row.append(title, track, value); coverageChart.append(row);
     });
+  </script>
+</div></div>
+</body>
+</html>
