@@ -17,7 +17,10 @@
   const text = 'A study measured data and evidence. The result may help improve mathematics education, but bias and risk remain a concern.';
   const realFetch = win.fetch;
   if (document.getElementById('viewpoint-map')) {
-    assert(document.querySelectorAll('#viewpoint-map circle').length === 24, '24 original plot markers');
+    // The count comes from the data, so accepting a submission does not break this.
+    const expected = Number(document.getElementById('viewpoint-map').dataset.sourceCount);
+    assert(expected > 0, 'Map states how many sources it draws');
+    assert(document.querySelectorAll('#viewpoint-map circle').length === expected, 'A marker for every source');
     const filter = document.querySelector('#viewpoint-key [data-filter="research"]');
     filter.click(); assert(filter.getAttribute('aria-pressed') === 'false' && document.querySelector('#viewpoint-map g[data-category="research"]').style.display === 'none', 'Category filter hides markers');
     filter.click(); assert(filter.getAttribute('aria-pressed') === 'true', 'Category filter restores markers');

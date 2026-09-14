@@ -69,16 +69,27 @@ def main():
 
     # Timing is derived from the ledger, so rebuild it before copying.
     load('build-source-timing').main()
-    load('build-charts').main(args.site)
+    chart_changes = load('build-charts').main(args.site) or []
 
+    changed = []
     for source, targets in COPIES.items():
         for target in targets:
             dest = args.site / target
             dest.parent.mkdir(parents=True, exist_ok=True)
+            differs = not dest.exists() or dest.read_bytes() != (mathchat.DATA / source).read_bytes()
             shutil.copyfile(mathchat.DATA / source, dest)
-            print(f'copied {source} -> {target}')
+            if differs:
+                changed.append(target)
+                print(f'updated {target}')
 
-    print('\nSite data and charts are up to date. Commit both repositories to publish.')
+    # Say what actually changed. "Ran successfully" and "something changed" are
+    # different things, and reporting only the first has misled a maintainer.
+    changed.extend(chart_changes)
+    if changed:
+        print(f'\n{len(changed)} site file(s) changed. Commit both repositories to publish.')
+    else:
+        print('\nNothing changed: the site already matched data/. '
+              'If you expected a new source here, it was not added.')
     return 0
 
 

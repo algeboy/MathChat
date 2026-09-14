@@ -17,11 +17,13 @@
       const svg = doc.querySelector('.mathchat-page svg');
       assert(Boolean(svg.compareDocumentPosition(nav) & Node.DOCUMENT_POSITION_FOLLOWING), 'Arrows follow chart');
       if (i >= 2 && i < 4) {
-        assert(doc.querySelectorAll('.topic-source').length === 24, 'All sources shown');
-        assert(doc.querySelectorAll('.topic-source circle').length === 24, 'One status marker per source');
+        const expected = Number(doc.querySelector('[data-source-count]').dataset.sourceCount);
+        assert(expected > 0, 'Chart states how many sources it covers');
+        assert(doc.querySelectorAll('.topic-source').length === expected, 'All sources shown');
+        assert(doc.querySelectorAll('.topic-source circle').length === expected, 'One status marker per source');
         assert(!doc.querySelector('[data-status="no"]'), 'Unknown is not absence');
       }
-      if (i === 4) assert(doc.querySelectorAll('.timing-source').length === 24, 'All timing rows');
+      if (i === 4) assert(doc.querySelectorAll('.timing-source').length === Number(doc.querySelector('[data-source-count]').dataset.sourceCount), 'All timing rows');
       assert(frame.contentWindow.getComputedStyle(doc.body).backgroundImage.includes('brick-wall.jpeg'), 'Original theme');
     }
     console.log('Chart pages PASS: five routes, one chart per page, ordered arrows, 24 source markers, original theme.');

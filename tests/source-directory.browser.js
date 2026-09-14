@@ -15,7 +15,9 @@
     frame.src = '/MathChat/sources/'; document.body.append(frame);
     await new Promise(resolve => frame.onload = resolve);
     const doc = frame.contentDocument;
-    check(doc.querySelectorAll('.mathchat-source-list .mathchat-source-entry').length === 24, 'All 24 public sources');
+    const expected = Number(doc.querySelector('.mathchat-source-list').dataset.sourceCount);
+    check(expected > 0, 'Directory states how many sources it lists');
+    check(doc.querySelectorAll('.mathchat-source-list .mathchat-source-entry').length === expected, 'Every public source listed');
     const local = doc.getElementById('mathchat-local-sources');
     check(local.textContent.includes('Test submitter'), 'Personal statement attribution');
     check(local.textContent.includes('<script>not executable</script>'), 'Statement rendered as text');

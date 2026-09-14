@@ -48,6 +48,9 @@
     [0,25,50,75,100].forEach(v=>{ add('line',{x1:x(v),x2:x(v),y1:m.t,y2:m.t+h,class:'grid'}); add('line',{x1:m.l,x2:m.l+w,y1:y(v),y2:y(v),class:'grid'}); add('text',{x:x(v),y:m.t+h+22,'text-anchor':'middle'},v); add('text',{x:m.l-11,y:y(v)+4,'text-anchor':'end'},v); });
     add('text',{x:m.l+w/2,y:545,'text-anchor':'middle'},'Evidence basis: speculative (0) to data-supported (100)');
     add('text',{x:20,y:m.t+h/2,transform:`rotate(-90 20 ${m.t+h/2})`,'text-anchor':'middle'},'Outlook: anxious (0) to hopeful (100)');
+    // This preview carries a static snapshot of the map; say how big it is so
+    // the test checks the chart against its own data rather than a fixed number.
+    document.getElementById('chart').dataset.sourceCount = data.length;
     data.forEach(([name,evidence,outlook,reliability],i)=>{const color=`hsl(${(i*47)%360} 55% 48%)`;const c=add('circle',{cx:x(evidence),cy:y(outlook),r:5+reliability/18,fill:color,class:'point'});const title=add('title',{},`${name}: outlook ${outlook}; evidence ${evidence}; reliability ${reliability}`);c.append(title);add('text',{x:x(evidence)+11,y:y(outlook)+4,class:'label'},name);});
     const concerns = [
       ['Education', 6], ['Research mathematics', 13], ['Jobs in mathematics', 0]

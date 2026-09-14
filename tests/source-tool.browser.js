@@ -13,7 +13,8 @@
   const settle = async () => { for (let i = 0; i < 30; i++) { await new Promise(r => setTimeout(r, 10)); if (!$('score').disabled) return; } throw new Error('Explore did not settle'); };
   const text = 'A study measured data and evidence. The result may help improve mathematics education, but bias and risk remain a concern.';
   if (document.getElementById('chart')) {
-    assert(document.querySelectorAll('#chart circle').length === 24, '24 original plot markers');
+    const expected = Number(document.getElementById('chart').dataset.sourceCount);
+    assert(expected > 0 && document.querySelectorAll('#chart circle').length === expected, 'A marker for every source in the preview snapshot');
     assert(document.querySelector('#chart circle title').textContent === 'Su: outlook 82; evidence 35; reliability 60', 'Plot tooltip intact');
     assert(document.querySelectorAll('.histogram-row').length === 3, 'Concern histogram intact');
     assert(document.documentElement.scrollWidth <= innerWidth, 'No page overflow');

@@ -63,17 +63,16 @@ jobs:
               echo '```'
               echo
             fi
-            echo "To accept it:"
+            echo "To accept it, run this one command in the MathChat repository."
+            echo "It asks for the fields above, then writes, rebuilds and syncs, and says"
+            echo "plainly whether the source was added:"
             echo
             echo '```sh'
-            echo "gh issue view $NUMBER --json body -q .body > issue.txt"
-            echo "python3 scripts/issue-to-source.py issue.txt > new.json"
-            echo "# edit new.json: published, category, openness, map_category, and the scores"
-            echo "python3 scripts/add-source.py --json new.json"
-            echo "python3 scripts/sync-site.py"
+            echo "python3 scripts/accept-submission.py $NUMBER"
             echo '```'
             echo
-            echo "Then commit and push this repository and the site repository."
+            echo "It stops at the first problem rather than reporting success afterwards,"
+            echo "and it tells you what to commit. Add \`--dry-run\` to see the record first."
           } > comment.md
           gh issue comment "$NUMBER" --repo "$GITHUB_REPOSITORY" --body-file comment.md
 

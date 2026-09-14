@@ -37,9 +37,13 @@ def place_labels(points, markers):
     is clear, which is what the hand-tuned chart achieved by eye. Labels are
     placed largest-marker first, since those have the least room to move.
     """
-    CANDIDATES = [(side, dy) for dy in (4, -8, 15, -19, 26, -30, 37, -41, 48, -52)
+    # Measured from the rendered chart: the theme's chalk face runs up to about
+    # 7.3px per character at 14.5px line height. Estimating smaller let labels
+    # overlap once the chart filled up, so allow a little more than measured, and
+    # step candidates by more than a line height so a rejected offset clears.
+    CANDIDATES = [(side, dy) for dy in (4, -12, 20, -28, 36, -44, 52, -60, 68, -76)
                   for side in (1, -1)]
-    CHAR_W, LINE_H = 6.6, 13
+    CHAR_W, LINE_H = 7.5, 16
     placed = []
     overlaps = lambda a, b: a[0] < b[2] and b[0] < a[2] and a[1] < b[3] and b[1] < a[3]
     for x, y, r, text in points:
@@ -82,7 +86,8 @@ def viewpoint_map():
                  evidence=evidence, reliability=reliability))
 
     out = []
-    out.append('<svg id="viewpoint-map" class="mathchat-plot" viewBox="0 0 920 560" role="img" aria-labelledby="plot-title plot-desc">')
+    total = sum(len(v) for v in by_category.values())
+    out.append(f'<svg id="viewpoint-map" class="mathchat-plot" data-source-count="{total}" viewBox="0 0 920 560" role="img" aria-labelledby="plot-title plot-desc">')
     out.append('  <title id="plot-title">AI and mathematics viewpoints</title>')
     out.append('  <desc id="plot-desc">A scatter plot. The horizontal axis is evidence basis from speculative to data-supported. '
                'The vertical axis is outlook from anxious to hopeful. Circle size represents provisional source reliability.</desc>')
@@ -145,7 +150,7 @@ def category_chart():
             r=max(6, radius(reliability[row['id']]) - 2)))
 
     height = bottom + 110
-    out = [f'<svg class="mathchat-plot" viewBox="0 0 920 {height}" role="img" aria-labelledby="category-plot-title category-plot-desc">',
+    out = [f'<svg class="mathchat-plot" data-source-count="{len(rows)}" viewBox="0 0 920 {height}" role="img" aria-labelledby="category-plot-title category-plot-desc">',
            '  <title id="category-plot-title">AI openness by source category</title>',
            f'  <desc id="category-plot-desc">Sources are grouped into {len(present)} rows by their primary public role '
            f'({", ".join(present)}), and positioned horizontally by openness to AI use.</desc>',
@@ -172,11 +177,21 @@ def category_chart():
 
 
 def main(site_root):
+    """Write both chart includes. Returns the ones whose content actually changed,
+    so a caller can report what moved rather than only that it ran."""
     includes = Path(site_root) / '_includes'
     includes.mkdir(parents=True, exist_ok=True)
-    (includes / 'mathchat-viewpoint-map.html').write_text(viewpoint_map())
-    (includes / 'mathchat-category-chart.html').write_text(category_chart())
-    print(f'wrote {includes}/mathchat-viewpoint-map.html and mathchat-category-chart.html')
+    changed = []
+    for name, build in (('mathchat-viewpoint-map.html', viewpoint_map),
+                        ('mathchat-category-chart.html', category_chart)):
+        target = includes / name
+        content = build()
+        if not target.exists() or target.read_text() != content:
+            changed.append(name)
+        target.write_text(content)
+    for name in changed:
+        print(f'rebuilt {name}')
+    return changed
 
 
 if __name__ == '__main__':
